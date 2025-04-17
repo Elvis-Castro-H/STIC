@@ -1,0 +1,43 @@
+version: "3.1"
+
+rules:
+# Regla para saludar siempre que el usuario salude
+- rule: Saludar al usuario
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+
+# Regla para pedir datos de engranaje
+- rule: Solicitar datos de engranaje
+  steps:
+  - intent: cotizar_engranaje
+  - action: utter_pedir_datos_engranaje
+
+# Regla para pedir datos de separador
+- rule: Solicitar datos de separador
+  steps:
+  - intent: cotizar_separador
+  - action: utter_pedir_datos_separador
+
+# Regla para procesar datos de engranaje
+- rule: Procesar cotización de engranaje
+  steps:
+  - intent: proporcionar_datos_engranaje
+  - action: action_procesar_cotizacion_engranaje
+
+# Regla para procesar datos de separador
+- rule: Procesar cotización de separador
+  steps:
+  - intent: proporcionar_datos_separador
+  - action: action_procesar_cotizacion_separador
+
+# Regla para despedirse
+- rule: Despedirse del usuario
+  steps:
+  - intent: despedir
+  - action: utter_despedir
+
+- rule: Llamar a Gemini cuando no se reconoce la intención
+  steps:
+    - intent: nlu_fallback
+    - action: action_query_gemini  
