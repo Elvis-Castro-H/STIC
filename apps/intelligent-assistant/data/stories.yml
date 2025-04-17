@@ -1,0 +1,38 @@
+version: "3.1"
+
+stories:
+- story: cotización engranaje
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: cotizar_engranaje
+  - action: utter_pedir_datos_engranaje
+  - intent: proporcionar_datos_engranaje
+    entities:
+    - num_dientes: "20"
+    - diametro_interior: "30"
+    - diametro_exterior: "25"
+  - slot_was_set:
+    - num_dientes: "20"
+    - diametro_exterior: "25"
+    - diametro_interior: "30"
+  - action: action_procesar_cotizacion_engranaje
+  - intent: despedir
+  - action: utter_despedir
+
+- story: cotización separador
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: cotizar_separador
+  - action: utter_pedir_datos_separador
+  - intent: proporcionar_datos_separador
+    entities:
+    - marca: Toyota
+    - anio: "2002"
+  - slot_was_set:
+    - marca: Toyota
+    - anio: "2002"
+  - action: action_procesar_cotizacion_separador
+  - intent: despedir
+  - action: utter_despedir

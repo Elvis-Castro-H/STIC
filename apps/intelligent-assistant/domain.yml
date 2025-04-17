@@ -1,0 +1,67 @@
+version: '3.1'
+intents:
+- cotizar_engranaje
+- cotizar_separador
+- despedir
+- nlu_fallback
+- proporcionar_datos_engranaje
+- proporcionar_datos_separador
+- saludar
+entities:
+- modelo
+- anio
+- marca
+- num_dientes
+- diametro_interior
+- diametro_exterior
+slots:
+  num_dientes:
+    type: float
+    mappings:
+    - type: from_entity
+      entity: num_dientes
+  diametro_exterior:
+    type: float
+    mappings:
+    - type: from_entity
+      entity: diametro_exterior
+  diametro_interior:
+    type: float
+    mappings:
+    - type: from_entity
+      entity: diametro_interior
+  marca:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: marca
+  modelo:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: modelo
+  anio:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: anio
+responses:
+  utter_saludar:
+  - text: ¡Hola! ¿En qué puedo ayudarte? Puedo cotizar engranajes o separadores de aro.
+  utter_pedir_datos_engranaje:
+  - text: 'Por favor, proporciona los siguientes datos del engranaje: número de dientes, diámetro exterior (en mm) y diámetro interior (en mm).'
+  utter_pedir_datos_separador:
+  - text: Por favor, proporciona la marca, modelo y año del vehículo para el separador de aro.
+  utter_cotizacion_enviada:
+  - text: '¡Gracias! He enviado los datos para obtener la cotización. El precio es: {precio}'
+  utter_despedir:
+  - text: ¡Gracias por tu consulta! ¿Hay algo más en lo que pueda ayudarte?
+actions:
+- action_query_gemini
+- action_procesar_cotizacion_separador
+- action_procesar_cotizacion_engranaje
+- utter_pedir_datos_separador
+- utter_pedir_datos_engranaje
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

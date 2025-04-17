@@ -1,0 +1,80 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches and logs
+*.log
+*.pid
+*.seed
+*.db
+*.sqlite3
+.cache/
+coverage/
+htmlcov/
+*.cover
+*.py,cover
+*.log
+*.pot
+*.mo
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+
+# Rasa specific
+.rasa/
+models/
+*.json
+*.md
+*.yml.backup
+*.nlu.json
+*.tar.gz
+*.zip
+results/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Test results
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Python environment files
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Mac / Windows / Linux system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Secret / API Keys
+.env
+*.env
+.env.*
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Other
+*.bak
+*.swp
+*~

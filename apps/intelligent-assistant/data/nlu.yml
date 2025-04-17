@@ -1,0 +1,120 @@
+version: "3.1"
+nlu:
+- intent: saludar
+  examples: |
+    - hola
+    - buenos días
+    - buenas tardes
+    - hey
+    - saludos
+- intent: cotizar_engranaje
+  examples: |
+    - necesito cotizar un engranaje
+    - quiero precio de un engranaje
+    - cuánto cuesta un engranaje
+    - cotización de engranaje
+    - precio de engranaje
+    - quiero un engranaje
+    - buenas amigo me interesan engranajes
+- intent: cotizar_separador
+  examples: |
+    - necesito cotizar un separador de aro
+    - quiero precio de un separador
+    - cuánto cuesta un separador de aro
+    - cotización de separador
+    - precio de separador de aro
+    - quisiera separador
+    - buenas, quisiera cotizar un juego de separadores
+    - quiero un separador
+    - separadore
+    - quiero separadores
+    - quiero cotizar separadores para mi autito
+    - buenas amigo, quisiera separadores para mia utito
+    - buenas quiero separadores, tienen?
+- intent: proporcionar_datos_engranaje
+  examples: |
+    - el engranaje tiene [45](num_dientes) dientes, [100](diametro_exterior) mm exterior y [20](diametro_interior) mm interior
+    - dientes: [30](num_dientes), exterior: [80](diametro_exterior), interior: [15](diametro_interior)
+    - [60](num_dientes) dientes [120](diametro_exterior) mm [25](diametro_interior) mm
+    - [20](num_dientes) dientes, diametro exterior es de [30](diametro_exterior) mm y el diametro interior es de [25](diametro_interior) mm
+    - creo que tiene [50](num_dientes) dientes su diametro exterior es de [80](diametro_exterior) mm y el diametro interior es de [30](diametro_interior) mm
+- intent: proporcionar_datos_separador
+  examples: |
+    - es un [Toyota](marca) [Corolla](modelo) [2020](anio)
+    - vehículo [Honda](marca) [Civic](modelo) del [2019](anio)
+    - [Ford](marca) [Ranger](modelo) [2021](anio)
+    - [toyota]{"entity": "marca", "value": "Toyota"} celica [2002](anio)
+    - [ford]{"entity": "marca", "value": "Ford"} [explorer]{"entity": "modelo", "value": "Explorer"} [1999](anio)
+    - [toyota]{"entity": "marca", "value": "Toyota"} [tacoma]{"entity": "modelo", "value": "Tacoma"} [2022](anio)
+    - [Ford](marca) [Explorer](modelo) [1999](anio)
+    - [honda]{"entity": "marca", "value": "Honda"} [civic]{"entity": "modelo", "value": "Civic"} [1885](anio)
+    - mi autito es un [toyota]{"entity": "marca", "value": "Toyota"} [hilux]{"entity": "modelo", "value": "Hilux"} [2004](anio)
+    - mi autito es un [toyota]{"entity": "marca", "value": "Toyota"} [tacoma]{"entity": "modelo", "value": "Tacoma"} [2022](anio)
+    - ahh.. mi auto creo que es un [ford]{"entity": "marca", "value": "Ford"} [explorer]{"entity": "modelo", "value": "Explorer"} [1999](anio)
+- intent: despedir
+  examples: |
+    - adiós
+    - hasta luego
+    - gracias, eso es todo
+    - chao
+    - bye
+- intent: nlu_fallback
+  examples: |
+    - ajksdhaskdh
+    - giberish words
+    - bla bla bla
+    - esto no tiene sentido
+    - cuéntame un chisme
+    - cuál es tu color favorito
+    - qué opinas del clima de hoy
+    - sabes cocinar?
+    - qué opinas de Messi vs Ronaldo
+    - me gusta bailar salsa
+    - qué película me recomiendas
+    - tengo hambre
+    - cuánto pesa un elefante
+    - quiero escuchar música
+    - quién va a ganar el mundial
+    - qué opinas del reggaetón
+    - me siento triste
+    - estás enamorado?
+    - ajfiehuashduia
+    - no sé qué decirte
+    - la verdad no tengo nada que preguntar
+    - estoy aburrido
+    - dime una broma
+    - cuál es la capital de Japón
+    - no entiendo nada
+    - tengo ganas de dormir
+    - tienes mascota?
+    - estoy viendo netflix
+    - qué haces en tu tiempo libre
+    - te gusta el anime?
+    - quiero ver una serie nueva
+    - tu nombre es gracioso
+    - quién creó el universo
+    - quiero un celular
+    - me gusta caminar
+    - mi sueño es ser Messi
+    - me gugsta chambear
+- synonym: Toyota
+  examples: |
+    - toyota
+- synonym: Ford
+  examples: |
+    - ford
+- synonym: Explorer
+  examples: |
+    - explorer
+- synonym: Tacoma
+  examples: |
+    - tacoma
+- synonym: Honda
+  examples: |
+    - honda
+- synonym: Civic
+  examples: |
+    - civic
+- synonym: Hilux
+  examples: |
+    - hilux
