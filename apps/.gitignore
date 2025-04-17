@@ -1,0 +1,78 @@
+# Build results
+bin/
+obj/
+out/
+
+# Rider
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# dotCover
+*.dotCover
+
+# Logs
+*.log
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# TFS
+$tf/
+
+# JetBrains Rider caches
+.idea/
+
+# Auto-generated files
+Generated_Code/
+
+# Backup & temp files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Publish output
+publish/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Local secrets
+secrets.json
+
+# Entity Framework Migrations
+Migrations/
+
+# Others
+.DS_Store
+Thumbs.db
+
+.env
