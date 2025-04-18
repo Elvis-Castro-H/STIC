@@ -1,0 +1,98 @@
+
+.arma-container {
+  background-color: rgba(0, 0, 0, 0.9); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem;
+  height: 100%;
+}
+
+.arma-title {
+  color: #fff;
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 3rem;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.tarjetas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 450px;
+}
+
+.tarjeta {
+  flex: 1; 
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s, 0.3s;
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+}
+
+
+.tarjeta:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(255, 0, 0, 0.8);
+}
+
+.tarjeta-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.tarjeta-img {
+  max-width: 180px;
+  height: auto;
+  object-fit: contain;
+}
+
+.tarjeta-texto {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #000;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.tarjeta a {
+    text-decoration: none; 
+  }
+
+  .arma-container-kit {
+    background-color: rgba(0, 0, 0, 0.9); 
+    min-height: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 40px;
+  }
+  
+  .arma-title-kit {
+    color: #fff;
+    font-size: 2.8rem;
+    font-weight: bold;
+    margin-bottom: 32px;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+  
+  .tarjetas-container-kit {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem; 
+    padding: 0 80px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
