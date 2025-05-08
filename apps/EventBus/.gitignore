@@ -1,0 +1,73 @@
+﻿*.env
+
+.env
+# Ignore build outputs
+bin/
+obj/
+out/
+
+# Rider IDE files
+.idea/
+.idea_modules/
+*.sln.iml
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Visual Studio cache files
+.vscode/
+.vs/
+.vscode/settings.json
+
+# Ignore Rider and Resharper caches
+.idea/
+*.sln.iml
+# Rider Unity specific
+unityGenerated/
+
+# Rider directories
+.idea/
+
+# Rider to ignore system-wide settings folder for Windows and macOS
+.idea/systemSettings/
+.idea/workspace.xml
+
+# Rider project files and folders
+*.sln.iml
+.idea/.idea_system_settings.xml
+.idea/vcs.xml
+
+# Rider caches
+.idea/gradle.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/assets/
+
+# Local history for Rider
+.idea/workspace.xml
+
+# Ignore test results
+TestResult/
+TestResults/
+
+# ASP.NET Core Secrets
+**/secrets.json
+
+# dotnet user settings
+*.swp
+*.sln.iml
+
+# Rider external annotations
+resharper_external_annotations.xml
+resharper_external_annotations_cache.cache
+resharper_dotcover.settings
