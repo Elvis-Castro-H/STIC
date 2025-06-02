@@ -1,0 +1,38 @@
+using Quotation.Application.Abstract;
+using Quotation.Data.Abstract;
+using Quotation.Domain.Models;
+
+namespace Quotation.Application.Concrete;
+
+public class SpacerService : BaseService<Spacer, int>, ISpacerService
+{
+    private readonly ISpacerRepository _repository;
+    private readonly IMaterialRepository _materialRepository;
+
+    private const int HoursPerInch = 5;
+    private const double MeasureToAddToDiameter = 60;
+    private const int QuantityOfPieces = 4;
+
+    public SpacerService(ISpacerRepository repository, IMaterialRepository materialRepository) : base(repository)
+    {
+        _repository = repository;
+        _materialRepository = materialRepository;
+    }
+
+    public async Task<double> CalculatePrice(String material, double inches, string make, string model, int year)
+    { 
+        var wheelDetails = await _repository.GetWheelDetails(make, model, year);
+        var materialToUse = await _materialRepository.GetByNameAsync(material);
+        
+        if (materialToUse != null)
+        {
+            var weight = materialToUse.CalculateWeight(wheelDetails.BoltPattern, materialToUse, inches, MeasureToAddToDiameter);
+            var totalJobPrice = (materialToUse.PricePerHourMachine + materialToUse.PricePerHourOperator) * inches * HoursPerInch ;
+            var materialPrice = QuantityOfPieces * weight * materialToUse.PricePerKg;
+            return materialPrice + totalJobPrice;
+        }
+
+        return -1;
+    }
+    
+}
