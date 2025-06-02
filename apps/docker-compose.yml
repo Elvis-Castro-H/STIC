@@ -1,0 +1,105 @@
+version: '3.9'
+
+services:
+
+  # PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: main
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # MongoDB
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # Consul 
+  consul:
+    image: hashicorp/consul:latest
+    container_name: consul
+    ports:
+      - "8500:8500"
+
+  # Service Discovery
+  servicediscovery:
+    build:
+      context: ./ServiceDiscovery
+    depends_on:
+      - consul
+    ports:
+      - "5010:80"
+    environment:
+      - CONSUL_ADDRESS=http://consul:8500
+
+  # Catalog API
+  catalogapi:
+    build:
+      context: ./CatalogApi
+    env_file:
+      - ./CatalogApi/CatalogApi.API/.env
+    depends_on:
+      - postgres
+    ports:
+      - "5002:80"
+
+  # Quotation API
+  quotation:
+    build:
+      context: ./Quotation
+    env_file:
+      - ./Quotation/Quotation.API/.env
+    depends_on:
+      - postgres
+    ports:
+      - "5001:80"
+
+  # Vehicle Data Integrator
+  vehicledataintegrator:
+    build:
+      context: ./VehicleDataIntegrator
+    env_file:
+      - ./VehicleDataIntegrator/VehicleDataIntegrator.API/.env
+    ports:
+      - "5003:80"
+
+  # Event Bus
+  eventbus:
+    build:
+      context: ./EventBus
+    env_file:
+      - ./EventBus/.env
+    depends_on:
+      - mongodb
+    ports:
+      - "5006:80"
+
+  # API Gateway
+  apigateway:
+    build:
+      context: ./ApiGateway
+    env_file:
+      - ./ApiGateway/.env
+    depends_on:
+      - catalogapi
+      - quotation
+      - eventbus
+      - vehicledataintegrator
+    ports:
+      - "5000:80"
+
+volumes:
+  postgres_data:
+  mongo_data:

@@ -62,7 +62,7 @@ public class SubscriptionService : ISubscriptionService
                 var response = await client.PostAsync(url, jsonContent);
                 if (!response.IsSuccessStatusCode)
                 {
-                    _logger.LogError($"Failed to send event to {url}. Status code: {response.StatusCode}");
+                    _logger.LogError($"Failed to send event to {url}. Status code: {response.StatusCode}. Content: {await response.Content.ReadAsStringAsync()}");
                 }
             }
             catch (Exception ex)
