@@ -4,13 +4,14 @@ import { Product } from '@/app/types/Products'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
-type Params = { params: { id: string } }
-
 /**
  * GET: Get product by ID
  */
-export async function GET(_: NextRequest, { params }: Params) {
-  const { id } = params
+export async function GET(
+  _req: NextRequest,
+  context: { params: { id: string } }
+) {
+  const { id } = context.params
 
   try {
     const response = await axios.get<Product>(`${BASE_URL}/api/Product/${id}`)
@@ -23,8 +24,11 @@ export async function GET(_: NextRequest, { params }: Params) {
 /**
  * PUT: Update product by ID
  */
-export async function PUT(req: NextRequest, { params }: Params) {
-  const { id } = params
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
+  const { id } = context.params
 
   try {
     const body = await req.json()
@@ -38,8 +42,11 @@ export async function PUT(req: NextRequest, { params }: Params) {
 /**
  * DELETE: Delete product by ID
  */
-export async function DELETE(_: NextRequest, { params }: Params) {
-  const { id } = params
+export async function DELETE(
+  _req: NextRequest,
+  context: { params: { id: string } }
+) {
+  const { id } = context.params
 
   try {
     await axios.delete(`${BASE_URL}/api/Product/${id}`)
