@@ -1,48 +1,50 @@
-import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
-import { Product } from '@/app/types/Products';
+import { NextRequest, NextResponse } from 'next/server'
+import axios from 'axios'
+import { Product } from '@/app/types/Products'
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || ''
+
+type Params = { params: { id: string } }
 
 /**
  * GET: Get product by ID
  */
-export async function GET(_: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
+export async function GET(_: NextRequest, { params }: Params) {
+  const { id } = params
 
   try {
-    const response = await axios.get<Product>(`${BASE_URL}/api/Product/${id}`);
-    return NextResponse.json(response.data, { status: 200 });
+    const response = await axios.get<Product>(`${BASE_URL}/api/Product/${id}`)
+    return NextResponse.json(response.data, { status: 200 })
   } catch (error) {
-    return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Product not found' }, { status: 404 })
   }
 }
 
 /**
  * PUT: Update product by ID
  */
-export async function PUT(req: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
+export async function PUT(req: NextRequest, { params }: Params) {
+  const { id } = params
 
   try {
-    const body = await req.json();
-    const response = await axios.put<Product>(`${BASE_URL}/api/Product/${id}`, body);
-    return NextResponse.json(response.data, { status: 200 });
+    const body = await req.json()
+    const response = await axios.put<Product>(`${BASE_URL}/api/Product/${id}`, body)
+    return NextResponse.json(response.data, { status: 200 })
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 })
   }
 }
 
 /**
  * DELETE: Delete product by ID
  */
-export async function DELETE(_: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
+export async function DELETE(_: NextRequest, { params }: Params) {
+  const { id } = params
 
   try {
-    await axios.delete(`${BASE_URL}/api/Product/${id}`);
-    return NextResponse.json(null, { status: 204 });
+    await axios.delete(`${BASE_URL}/api/Product/${id}`)
+    return NextResponse.json(null, { status: 204 })
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 })
   }
 }
