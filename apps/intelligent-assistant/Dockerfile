@@ -18,5 +18,5 @@ EXPOSE 5055
 # Entrenar el modelo de Rasa
 #RUN rasa train
 
-# Iniciar Rasa y el Action Server en paralelo
-CMD ["bash", "-c", "rasa run --enable-api --cors '*' --port 5005 & rasa run actions --port 5055"]
+# Iniciar Rasa y el Action Server en paralelo usando el comando adecuado
+CMD rasa run --enable-api --cors '*' --port 5005 & rasa run actions --port 5055
