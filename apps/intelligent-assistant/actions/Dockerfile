@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . /app
 
 USER root
-RUN pip install --no-cache-dir -r requirements-actions.txt
+#RUN pip install --no-cache-dir -r requirements-actions.txt
 USER 1001
 
 EXPOSE 5055
