@@ -64,6 +64,7 @@ public class SubscriptionService : ISubscriptionService
                 {
                     _logger.LogError($"Failed to send event to {url}. Status code: {response.StatusCode}. Content: {await response.Content.ReadAsStringAsync()}");
                 }
+                _logger.LogInformation($"Event of type '{eventWrapper.EventType}' forwarded to {url} successfully.");
             }
             catch (Exception ex)
             {

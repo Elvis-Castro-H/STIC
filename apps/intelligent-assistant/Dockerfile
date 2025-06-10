@@ -10,13 +10,12 @@ COPY . /app
 # Instalar las dependencias del proyecto
 #RUN pip install --no-cache-dir -r requirements.txt
 
-# Exponer el puerto necesario para la API de Rasa
+# Exponer los puertos necesarios para la API de Rasa y el Action Server
 EXPOSE 5005
-# Exponer el puerto 5055 para el Action Server
 EXPOSE 5055
 
 # Entrenar el modelo de Rasa
 #RUN rasa train
 
-# Iniciar Rasa y el Action Server en paralelo usando el comando adecuado
-CMD rasa run --enable-api --cors '*' --port 5005 & rasa run actions --port 5055
+# Usar ENTRYPOINT para iniciar ambos servicios (Rasa y Action Server) en paralelo
+ENTRYPOINT ["sh", "-c", "rasa run --enable-api --cors '*' --port 5005 & rasa run actions --port 5055"]
