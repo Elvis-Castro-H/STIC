@@ -1,0 +1,33 @@
+name: CI_Push_Workflow
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+jobs:
+
+  check_commits_convention:
+    name: Check Conventional Commits Message
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: gsactions/commit-message-checker@v2
+        with:
+          pattern: '(?:feat|fix|chore|test|docs|build|ci|style|refactor|revert|hotfix)(?:\(\w+\))?:\s[a-z]{1,2}.+|^Merge branch .+ into .+$'
+          error: 'The commit message must have the following structure: <type>(?): <description>'
+          excludeDescription: 'true'
+          excludeTitle: 'true'
+          checkAllCommitMessages: 'true'
+          accessToken: ${{ secrets.GITHUB_TOKEN }}
+
+  check_branches_convention:
+    name: Check Conventional Branches Name
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: deepakputhraya/action-branch-name@master
+        with:
+          regex: '([a-z]+)/([a-z]+)'
+          allowed_prefixes: 'feature,bugfix,hotfix,build,ci,docs,chore,refactor,'
+          ignore: main,develop
