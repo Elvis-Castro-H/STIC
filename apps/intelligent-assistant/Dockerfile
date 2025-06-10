@@ -14,7 +14,7 @@ COPY . /app
 EXPOSE 5005
 
 # Entrenar el modelo de Rasa
-RUN rasa train
+#RUN rasa train
 
 # Iniciar Rasa en segundo plano y luego iniciar el Action Server
 CMD ["sh", "-c", "rasa run --enable-api --cors '*' --port 5005 & rasa run actions --port 5055"]
