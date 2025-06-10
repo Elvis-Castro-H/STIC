@@ -1,11 +1,20 @@
-FROM rasa/rasa:latest-full
+# Usar la imagen base oficial de Rasa
+FROM rasa/rasa:2.8.0-full
+
+# Establecer el directorio de trabajo
 WORKDIR /app
+
+# Copiar todos los archivos del proyecto al contenedor
 COPY . /app
 
-USER root
-#RUN pip install --no-cache-dir -r requirements.txt || true # '|| true' para que no falle si no existe
-USER 1001
+# Instalar las dependencias del proyecto
+#RUN pip install --no-cache-dir -r requirements.txt
 
+# Exponer el puerto necesario para la API de Rasa
 EXPOSE 5005
 
-CMD ["rasa", "run", "-m", "models", "--enable-api", "--cors", "*", "--debug", "--port", "5005"]
+# Entrenar el modelo de Rasa
+RUN rasa train
+
+# Iniciar Rasa en segundo plano y luego iniciar el Action Server
+CMD ["sh", "-c", "rasa run --enable-api --cors '*' --port 5005 & rasa run actions --port 5055"]
