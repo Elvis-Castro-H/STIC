@@ -12,7 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Exponer el puerto necesario para la API de Rasa
 EXPOSE 5005
-EXPOSE 5055  # Exponer el puerto 5055 para el Action Server
+# Exponer el puerto 5055 para el Action Server
+EXPOSE 5055
 
 # Entrenar el modelo de Rasa
 RUN rasa train
