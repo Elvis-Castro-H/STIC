@@ -18,7 +18,7 @@ EXPOSE 5005
 EXPOSE 5055
 
 # Entrenar el modelo de Rasa
-#RUN rasa train
+RUN rasa train
 
 # Usar ENTRYPOINT para iniciar ambos servicios (Rasa y Action Server) en paralelo
 ENTRYPOINT ["sh", "-c", "rasa run --enable-api --cors '*' --port 5005 & rasa run actions --port 5055"]
