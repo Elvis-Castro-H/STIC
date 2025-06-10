@@ -28,7 +28,6 @@ venv.bak/
 
 # Rasa specific
 .rasa/
-models/
 *.json
 *.md
 *.yml.backup
