@@ -7,6 +7,9 @@ WORKDIR /app
 # Copiar todos los archivos del proyecto al contenedor
 COPY . /app
 
+# Ejecutar como root para instalar las dependencias
+USER root
+
 # Instalar las dependencias del proyecto
 RUN pip install --no-cache-dir -r requirements.txt
 
