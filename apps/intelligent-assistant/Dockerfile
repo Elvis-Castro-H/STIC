@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt || true
 RUN rasa train
 
 # Expone el puerto 5005 (API REST y canales de entrada)
+ENV PORT=5005
 EXPOSE 5005
 
 # Ejecuta el servidor de Rasa en modo API
