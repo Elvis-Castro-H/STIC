@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import "../../styles/separadores.css";
+import SpacerScene from "../UI/3d-views/Spacer";
 
 export default function SeparadoresPage() {
   const [marca, setMarca] = useState("");
@@ -74,14 +75,17 @@ export default function SeparadoresPage() {
 
         <div className="contenedor-visualizacion">
           <p className="subtitulo">Visualización 3D</p>
-          <div className="visualizacion">
-            <div className="contenedor-3d">
-              <img
-                src="https://i.ibb.co/Kxsn4rvB/image-23.png"
-                alt="Vista 3D del separador"
-                className="imagen-3d"
-              />
-            </div>
+          <div style={{ margin: 0, padding: 0, height: "50vh" }} className="contenedor-visualizacion-gear">
+          <SpacerScene
+            studCount={4}
+            hasCenterLip={true}
+            thickness={25}
+            boltPattern={100}
+            boltDiameter={12}
+            lipHeight={8}
+            lipDiameter={56}
+          />
+
           </div>
         </div>
       </div>
