@@ -1,6 +1,6 @@
 namespace Quotation.API.Dtos.Spacer;
 
-public class QuotationDetailsDto
+public class QuotationSpacerDetailsDto
 {
     public string Make {get; set;}
     public string Model {get; set;}
