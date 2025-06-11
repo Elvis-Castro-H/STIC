@@ -37,8 +37,17 @@ ENV RASA_HOME=/app
 ENV RASA_MODEL_DIR=/app/models
 ENV RASA_LOG_LEVEL=DEBUG
 
-# Comando de inicio embebido (sin script separado)
-CMD ["sh", "-c", "echo 'Iniciando servicios de Rasa...' && \
-    echo 'Modelos disponibles:' && ls -la /app/models/ && \
-    rasa run actions --port 5055 --debug & sleep 5 && \
-    rasa run --enable-api --cors '*' --port 5005 --debug"]
+# Crear un script de inicio inline
+RUN echo '#!/bin/bash\n\
+echo "Iniciando servicios de Rasa..."\n\
+echo "Modelos disponibles:"\n\
+ls -la /app/models/\n\
+echo "Iniciando Action Server..."\n\
+rasa run actions --port 5055 --debug &\n\
+sleep 10\n\
+echo "Iniciando Rasa Server..."\n\
+rasa run --enable-api --cors "*" --port 5005 --debug\n\
+' > /app/start.sh && chmod +x /app/start.sh
+
+# Sobrescribir el ENTRYPOINT de la imagen base
+ENTRYPOINT ["/app/start.sh"]
