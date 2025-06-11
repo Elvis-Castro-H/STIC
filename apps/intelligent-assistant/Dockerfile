@@ -22,32 +22,21 @@ RUN chown -R 1001:1001 /app
 # Volver al usuario rasa
 USER 1001
 
-# Entrenar el modelo de Rasa con logs detallados
+# Entrenar el modelo de Rasa y verificar que se genere correctamente
 RUN rasa train --debug
 
 # Verificar que el modelo se haya creado
-RUN ls -la /app/models/ || echo "No se encontraron modelos"
+RUN ls -la /app/models/
 
-# Exponer los puertos necesarios
+# Exponer los puertos necesarios para la API de Rasa y el Action Server
 EXPOSE 5005
 EXPOSE 5055
 
-# Variables de entorno
-ENV RASA_HOME=/app
-ENV RASA_MODEL_DIR=/app/models
-ENV RASA_LOG_LEVEL=DEBUG
+# Crear un script de inicio para manejar ambos servicios
+COPY start.sh /app/start.sh
+USER root
+RUN chmod +x /app/start.sh
+USER 1001
 
-# Crear un script de inicio inline
-RUN echo '#!/bin/bash\n\
-echo "Iniciando servicios de Rasa..."\n\
-echo "Modelos disponibles:"\n\
-ls -la /app/models/\n\
-echo "Iniciando Action Server..."\n\
-rasa run actions --port 5055 --debug &\n\
-sleep 10\n\
-echo "Iniciando Rasa Server..."\n\
-rasa run --enable-api --cors "*" --port 5005 --debug\n\
-' > /app/start.sh && chmod +x /app/start.sh
-
-# Sobrescribir el ENTRYPOINT de la imagen base
+# Usar el script de inicio
 ENTRYPOINT ["/app/start.sh"]
