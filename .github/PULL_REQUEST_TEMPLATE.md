@@ -1,7 +1,7 @@
 <!-- Provide a general summary of the pull request in the Title above -->
 <!-- Please complete this template before creating the pull request. -->
 
-# Pull Request: [PRO-XX] <Feature/Issue Name>
+# Pull Request: [STI-XX] <Feature/Issue Name>
 
 ## Related Tickets & US
 - [Related ticket title or URL]()
@@ -53,4 +53,4 @@
 
 ## References
 
-- Related issue: [PRO-XX] <Link to related issue>
+- Related issue: [STI-XX] <Link to related issue>
