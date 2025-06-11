@@ -16,18 +16,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           types: |
-            feat
-            chore
-            test
-            docs
-            build
-            ci
-            style
-            fix
-            hotfix
-            refactor
-            perf
-            revert
+            Feature
           requireScope: false
           subjectPattern: ^(?![A-Z]).+$
           subjectPatternError: |
