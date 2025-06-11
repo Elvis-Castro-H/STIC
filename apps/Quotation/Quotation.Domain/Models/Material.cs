@@ -8,7 +8,7 @@ public class Material : BaseEntity<int>
     public double PricePerHourMachine { get; set; }
     public double PricePerHourOperator { get; set; }
     
-    public double CalculateWeight(double diameter, Material material, double inches, double measureToAddToDiameter)
+    public virtual double CalculateWeight(double diameter, Material material, double inches, double measureToAddToDiameter)
     {
         var volume = CalculateVolume(diameter, inches, measureToAddToDiameter);
         return volume * material.Density;

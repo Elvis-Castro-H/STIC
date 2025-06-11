@@ -18,13 +18,14 @@ public class SpacerController : BaseController<Spacer, SpacerOutputDto, SpacerIn
         _spacerService = spacerService;
     }
 
-    [HttpPost("/quotation")]
-    public async Task<ActionResult<int>> GetQuotation([FromBody] QuotationDetailsDto quotationDetails)
+    [HttpPost("calculate-price")]
+    public async Task<ActionResult<SpacerOutputDto>> GetQuotation([FromBody] QuotationSpacerDetailsDto quotationSpacerDetails)
     {
-        var totalPrice = await _spacerService.CalculatePrice(quotationDetails.Material,
-            quotationDetails.Inches, quotationDetails.Make, quotationDetails.Model,
-            quotationDetails.Year);
-        return Ok(totalPrice);
+        var totalPrice = await _spacerService.CalculatePrice(quotationSpacerDetails.Material,
+            quotationSpacerDetails.Inches, quotationSpacerDetails.Make, quotationSpacerDetails.Model,
+            quotationSpacerDetails.Year);
+        var response = _mapper.Map<SpacerOutputDto>(totalPrice);
+    return Ok(response);
     }
     
     [HttpPost("receiver")]
