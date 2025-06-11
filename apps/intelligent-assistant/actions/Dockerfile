@@ -1,20 +1,17 @@
-# Usa la imagen oficial del Action Server
+# Imagen base del action server
 FROM rasa/rasa-sdk:3.6.0
 
-# Directorio de trabajo dentro del contenedor
+# Directorio dentro del contenedor
 WORKDIR /app
 
-# Copia solo la carpeta de acciones (ajusta si está en otro lugar)
-COPY actions /app/actions
+# Copia el contenido de la carpeta 'actions' del proyecto raíz
+COPY . /app
 
-# Si tienes dependencias para tus acciones, colócalas en este archivo
-COPY requirements-actions.txt /app/requirements.txt
-
-# Instala las dependencias (opcional, si tienes algo en requirements)
+# Instala dependencias si tienes requirements
 RUN pip install --no-cache-dir -r requirements.txt || true
 
-# Expone el puerto por defecto del action server
+# Puerto del action server
 EXPOSE 5055
 
-# Comando para iniciar el servidor de acciones
+# Comando para ejecutar el action server
 CMD ["rasa", "run", "actions"]
