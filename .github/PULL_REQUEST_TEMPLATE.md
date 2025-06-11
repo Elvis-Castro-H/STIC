@@ -1,5 +1,4 @@
 <!-- Provide a general summary of the pull request in the Title above -->
-<!-- Please complete this template before creating the pull request. -->
 
 # Pull Request: [STI-XX] <Feature/Issue Name>
 
