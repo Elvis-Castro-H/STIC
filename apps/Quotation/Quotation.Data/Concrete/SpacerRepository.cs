@@ -2,8 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using Quotation.Data.Abstract;
 using Quotation.Data.Concrete;
 using Quotation.Data.Contexts;
@@ -39,6 +37,7 @@ public class SpacerRepository : BaseRepository<Spacer, int>, ISpacerRepository
             }
         };
         
+        Console.WriteLine(eventPayload);
 
         var tcs = new TaskCompletionSource<WheelDetails>();
         _pendingRequests[correlationId] = tcs;

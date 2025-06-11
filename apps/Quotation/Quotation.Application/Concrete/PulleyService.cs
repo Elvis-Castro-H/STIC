@@ -10,7 +10,7 @@ public class PulleyService : BaseService<Pulley, int>, IPulleyService
     private readonly IMaterialRepository _materialRepository;
 
     private const double HoursPerChannel = 1.5; 
-    private const double MeasureToAddToDiameter = 60;
+    private const double MeasureToAddToDiameter =5;
     private const int QuantityOfPieces = 1;
 
     public PulleyService(IPulleyRepository repository, IMaterialRepository materialRepository) : base(repository)
