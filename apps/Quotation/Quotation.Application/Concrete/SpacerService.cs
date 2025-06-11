@@ -19,7 +19,7 @@ public class SpacerService : BaseService<Spacer, int>, ISpacerService
         _materialRepository = materialRepository;
     }
 
-    public async Task<double> CalculatePrice(String material, double inches, string make, string model, int year)
+    public async Task<Spacer> CalculatePrice(String material, double inches, string make, string model, int year)
     { 
         var wheelDetails = await _repository.GetWheelDetails(make, model, year);
         var materialToUse = await _materialRepository.GetByNameAsync(material);
@@ -29,10 +29,20 @@ public class SpacerService : BaseService<Spacer, int>, ISpacerService
             var weight = materialToUse.CalculateWeight(wheelDetails.BoltPattern, materialToUse, inches, MeasureToAddToDiameter);
             var totalJobPrice = (materialToUse.PricePerHourMachine + materialToUse.PricePerHourOperator) * inches * HoursPerInch ;
             var materialPrice = QuantityOfPieces * weight * materialToUse.PricePerKg;
-            return materialPrice + totalJobPrice;
+            var spacer = new Spacer()
+            {
+                BoltCount = wheelDetails.BoltCount,
+                BoltPattern = wheelDetails.BoltPattern,
+                CenterBore = wheelDetails.CenterBore,
+                IsHubCentric = false,
+                Material = materialToUse,
+                MaterialId = materialToUse.Id,
+                Price = materialPrice + totalJobPrice,
+                ThicknessMm = inches
+            };
+            return await _repository.CreateAsync(spacer);
         }
-
-        return -1;
+        return null;
     }
     
 }
