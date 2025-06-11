@@ -18,4 +18,4 @@ RUN rasa train
 EXPOSE 5005
 
 # Ejecuta el servidor de Rasa en modo API
-CMD ["rasa", "run", "--enable-api", "--cors", "*", "--port", "5005"]
+ENTRYPOINT ["rasa", "run", "--enable-api", "--cors", "*", "--port", "5005"]
