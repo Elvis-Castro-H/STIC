@@ -7,6 +7,8 @@ WORKDIR /app
 # Copia el contenido de la carpeta 'actions' del proyecto raíz
 COPY . /app
 
+USER root
+
 # Instala dependencias si tienes requirements
 RUN pip install --no-cache-dir -r requirements.txt || true
 
