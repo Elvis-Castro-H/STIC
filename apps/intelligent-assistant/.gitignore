@@ -77,3 +77,5 @@ dist/
 *.bak
 *.swp
 *~
+
+models/
