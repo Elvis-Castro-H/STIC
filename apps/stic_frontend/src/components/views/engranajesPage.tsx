@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import "../../styles/separadores.css";
+import GearScene from "../UI/3d-views/Gear";
 
 export default function EngranajesPage() {
   const [diametroExterior, setDiametroExterior] = useState("");
@@ -67,33 +68,19 @@ export default function EngranajesPage() {
               min={0}
             />
           </div>
-
-          <div>
-            <label className="label">Tipo de canal</label>
-            <div className="opciones-espesor">
-              {["A", "B", "C"].map(tipo => (
-                <button
-                  key={tipo}
-                  onClick={() => setTipoCanal(tipo)}
-                  className={`espesor-btn ${tipoCanal === tipo ? "activo" : ""}`}
-                >
-                  {tipo}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
         <div className="contenedor-visualizacion">
           <p className="subtitulo">Visualización 3D</p>
-          <div className="visualizacion">
-            <div className="contenedor-3d">
-              <img
-                src="https://i.ibb.co/Kxsn4rvB/image-23.png"
-                alt="Vista 3D del engranaje"
-                className="imagen-3d"
-              />
-            </div>
+          <div style={{ margin: 0, padding: 0, height: "50vh" }} className="contenedor-visualizacion-gear">
+            <GearScene
+              numTeeth={24}
+              outerDiameter={10}
+              innerDiameter={8}
+              gearThickness={2}
+              holeDiameter={2}
+            />
+
           </div>
         </div>
       </div>
