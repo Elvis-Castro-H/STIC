@@ -204,3 +204,34 @@ body {
     color: #d40813;
   }
   
+  .divider {
+  margin: 20px 0;
+  border-top: 1px solid var(--thm-border-light);
+}
+
+.gsi-material-button {
+  border: none;
+  outline: none;
+  box-shadow: 0 4px 12px var(--thm-shadow-medium);
+  background-color: var(--white);
+}
+
+.gsi-material-button:focus {
+  outline: none;
+}
+
+.gsi-material-button-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+}
+
+.gsi-material-button:hover {
+  background-color: var(--thm-light-gray);
+  box-shadow: 0 6px 16px var(--thm-shadow-hover);
+  border: none !important;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
