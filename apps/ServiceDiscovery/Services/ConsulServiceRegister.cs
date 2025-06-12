@@ -18,7 +18,7 @@ public class ConsulServiceRegister(IConsulClient consulClient) : IServiceRegiste
             Port = input.Port,
             Check = new AgentServiceCheck
             {
-                HTTP = $"http://{input.Address}:{input.Port}{input.HealthCheckEndpoint}",
+                HTTP = $"{input.Address}:{input.Port}{input.HealthCheckEndpoint}",
                 Interval = TimeSpan.FromSeconds(10),
                 Timeout = TimeSpan.FromSeconds(5)
             }
@@ -47,7 +47,7 @@ public class ConsulServiceRegister(IConsulClient consulClient) : IServiceRegiste
         foreach (var service in services.Response)
         {
             var serviceName = service.Value.Service;
-            var serviceUri = new Uri($"http://{service.Value.Address}:{service.Value.Port}");
+            var serviceUri = new Uri($"{service.Value.Address}:{service.Value.Port}");
 
             if (!serviceUris.ContainsKey(serviceName))
             {
