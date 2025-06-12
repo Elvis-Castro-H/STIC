@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 [ApiController]
-[Route("{serviceName}/{*path}")]
+[Route("proxy/{serviceName}/{*path}")]
 public class GatewayController : ControllerBase
 {
     private readonly RequestRouter _requestRouter;
