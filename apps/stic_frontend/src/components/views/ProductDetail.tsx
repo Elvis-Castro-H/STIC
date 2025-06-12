@@ -29,7 +29,7 @@ export default function ProductDetail() {
         setProduct(data);
         setCejaOn(data?.cejaCentrada ?? false);
         setSelectedEspesor(data?.espesor ?? '1"');
-        setMainImage(data?.image ?? ""); // Inicializar imagen principal
+        setMainImage(data?.image ?? ""); 
       } catch (error) {
         console.error("Error al obtener producto:", error);
       } finally {
@@ -76,20 +76,6 @@ export default function ProductDetail() {
         <p className="product-description">{product.description}</p>
 
         <div className="product-specs">
-          {product.categoryId === 1 && (
-            <div className="ceja-toggle">
-              <strong className="spec-label">Ceja Centradora</strong>
-              <div className="ceja-control">
-                <button
-                  className={`ceja-switch ${cejaOn ? "on" : "off"}`}
-                  onClick={() => setCejaOn(!cejaOn)}
-                >
-                  <div className={`ceja-knob ${cejaOn ? "move" : ""}`}></div>
-                </button>
-                <span className="ceja-state">{cejaOn ? "ON" : "OFF"}</span>
-              </div>
-            </div>
-          )}
 
           <div className="stock-info">
             <strong className="spec-label">Stock disponible</strong>
@@ -97,22 +83,6 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {product.categoryId === 1 && (
-          <div className="espesor-selector">
-            <strong className="spec-label">Espesor</strong>
-            <div className="espesor-buttons">
-              {espesores.map((e) => (
-                <button
-                  key={e}
-                  onClick={() => setSelectedEspesor(e)}
-                  className={`espesor-button ${selectedEspesor === e ? "selected" : ""}`}
-                >
-                  {e}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
 
         <div className="action-row">
           <div className="counter">
@@ -124,11 +94,16 @@ export default function ProductDetail() {
             </button>
             <span className="counter-value">{counter}</span>
             <button
-              onClick={() => setCounter(counter + 1)}
+              onClick={() => {
+                if (counter < product.stock) {
+                  setCounter(counter + 1);
+                }
+              }}
               className="counter-button"
             >
               +
             </button>
+
           </div>
 
           <a

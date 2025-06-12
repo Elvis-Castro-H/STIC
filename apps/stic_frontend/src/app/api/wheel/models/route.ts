@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
+//const BASE_URL = process.env.NEXT_PUBLIC_API_URL + "/integration" || '';
+const BASE_URL = 'https://stic-vehicledataintegrator.onrender.com';
 
 export async function GET(req: NextRequest) {
   try {

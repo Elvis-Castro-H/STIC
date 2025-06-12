@@ -4,7 +4,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var consulAddress = builder.Configuration["Consul:Address"] ?? "http://stic-consul.onrender.com";
+var consulAddress = builder.Configuration["Consul:Address"] ?? "http://localhost:8500";
 builder.Services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(config =>
 {
     config.Address = new Uri(consulAddress);

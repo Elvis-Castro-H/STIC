@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL + "/quotation" || '';
+//const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL + "/quotation" || '';
+const BACKEND_URL = "https://stic-quotation.onrender.com";
 
 export async function POST(req: NextRequest) {
   try {

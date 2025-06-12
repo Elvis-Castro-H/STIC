@@ -3,7 +3,8 @@ import { NextResponse } from 'next/server';
 import axios from 'axios';
 import { Material } from '@/app/types/Materials';
 
-const MATERIAL_API_URL = process.env.NEXT_PUBLIC_API_URL + "/quotation" || '';
+//const MATERIAL_API_URL = process.env.NEXT_PUBLIC_API_URL + "/quotation" || '';
+const MATERIAL_API_URL = 'https://stic-quotation.onrender.com';
 
 export async function GET() {
   try {

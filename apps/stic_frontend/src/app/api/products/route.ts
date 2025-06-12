@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Product } from '@/app/types/Products';
 
 //const BASE_URL = process.env.NEXT_PUBLIC_API_URL + "/catalog" || '';
-const BASE_URL = "http://localhost:5189";
+const BASE_URL = "https://stic-catalog.onrender.com";
 
 /**
  * GET: Fetch all products

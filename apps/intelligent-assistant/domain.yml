@@ -7,6 +7,8 @@ intents:
 - proporcionar_datos_engranaje
 - proporcionar_datos_separador
 - saludar
+- cotizar_polea
+- proporcionar_datos_polea
 entities:
 - modelo
 - anio
@@ -14,7 +16,28 @@ entities:
 - num_dientes
 - diametro_interior
 - diametro_exterior
+- numero_canales
+- tipo_de_canal
+- diametro_hueco_interior
 slots:
+  numero_canales:
+    type: float
+    mappings:
+    - type: from_entity
+      entity: numero_canales
+
+  tipo_de_canal:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: tipo_de_canal
+
+  diametro_hueco_interior:
+    type: float
+    mappings:
+    - type: from_entity
+      entity: diametro_hueco_interior
+
   num_dientes:
     type: float
     mappings:
@@ -56,12 +79,15 @@ responses:
   - text: '¡Gracias! He enviado los datos para obtener la cotización. El precio es: {precio}'
   utter_despedir:
   - text: ¡Gracias por tu consulta! ¿Hay algo más en lo que pueda ayudarte?
+  utter_pedir_datos_polea:
+  - text: 'Por favor, proporciona los siguientes datos de la polea: diámetro exterior (mm), diámetro del hueco interior (mm), número de canales y tipo de canal (A, B o C).'
 actions:
 - action_query_gemini
 - action_procesar_cotizacion_separador
 - action_procesar_cotizacion_engranaje
 - utter_pedir_datos_separador
 - utter_pedir_datos_engranaje
+- action_procesar_cotizacion_polea
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

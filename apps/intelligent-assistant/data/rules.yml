@@ -19,6 +19,11 @@ rules:
   - intent: cotizar_separador
   - action: utter_pedir_datos_separador
 
+- rule: Solicitar datos de polea
+  steps:
+  - intent: cotizar_polea
+  - action: utter_pedir_datos_polea
+
 # Regla para procesar datos de engranaje
 - rule: Procesar cotización de engranaje
   steps:
@@ -30,6 +35,12 @@ rules:
   steps:
   - intent: proporcionar_datos_separador
   - action: action_procesar_cotizacion_separador
+
+- rule: Procesar cotización de polea
+  steps:
+  - intent: proporcionar_datos_polea
+  - action: action_procesar_cotizacion_polea
+
 
 # Regla para despedirse
 - rule: Despedirse del usuario

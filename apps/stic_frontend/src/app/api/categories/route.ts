@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import axios from 'axios';
 
 //const BASE_URL = process.env.NEXT_PUBLIC_API_URL + "/catalog" || '';
-const BASE_URL = "http://localhost:5189";
+const BASE_URL = "https://stic-catalog.onrender.com";
 
 /**
  * Fetches the all categories for the database

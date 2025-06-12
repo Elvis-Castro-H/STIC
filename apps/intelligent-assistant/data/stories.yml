@@ -36,3 +36,24 @@ stories:
   - action: action_procesar_cotizacion_separador
   - intent: despedir
   - action: utter_despedir
+
+- story: cotización polea
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: cotizar_polea
+  - action: utter_pedir_datos_polea
+  - intent: proporcionar_datos_polea
+    entities:
+    - diametro_exterior: "180"
+    - diametro_hueco_interior: "30"
+    - numero_canales: "2"
+    - tipo_de_canal: "B"
+  - slot_was_set:
+    - diametro_exterior: "180"
+    - diametro_hueco_interior: "30"
+    - numero_canales: "2"
+    - tipo_de_canal: "B"
+  - action: action_procesar_cotizacion_polea
+  - intent: despedir
+  - action: utter_despedir
