@@ -8,17 +8,7 @@ public class RequestRouter(CustomServiceDiscovery serviceDiscovery, IHttpClientF
 
     public async Task<HttpResponseMessage> RedirectRequestAsync(string serviceName, string downstreamPath, HttpRequestMessage request, string queryString)
     {
-        var serviceUri = await serviceDiscovery.GetServiceUriAsync(serviceName);
-
-        if (string.IsNullOrEmpty(serviceUri))
-        {
-            Console.WriteLine($"[ERROR] Service not found: {serviceName}");
-            return new HttpResponseMessage(HttpStatusCode.BadGateway)
-            {
-                Content = new StringContent($"Service '{serviceName}' not found in the service registry.")
-            };
-        }
-
+        var serviceUri = await GetServiceUriAsync(serviceName);
         var downstreamUrl = BuildDownstreamUrl(serviceUri, downstreamPath, queryString);
         var downstreamRequest = CreateDownstreamRequest(request, downstreamUrl);
 

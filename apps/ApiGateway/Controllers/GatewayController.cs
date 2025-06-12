@@ -23,6 +23,7 @@ public class GatewayController : ControllerBase
 [HttpGet, HttpPost, HttpPut, HttpDelete, HttpPatch]
 public async Task<IActionResult> ProxyRequest(string serviceName, string path)
 {
+    _logger.LogInformation("METHOD: {Method}, FULL PATH: {FullPath}, QUERY: {Query}", Request.Method, Request.Path, Request.QueryString);
     _logger.LogInformation("ProxyRequest initiated for service: {ServiceName}, path: {Path}", serviceName, path);
     _logger.LogInformation("Full URL: {Url}", $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}");
 
