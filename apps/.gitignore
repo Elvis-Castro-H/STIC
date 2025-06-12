@@ -68,9 +68,6 @@ TestResults/
 # Local secrets
 secrets.json
 
-# Entity Framework Migrations
-Migrations/
-
 # Others
 .DS_Store
 Thumbs.db
