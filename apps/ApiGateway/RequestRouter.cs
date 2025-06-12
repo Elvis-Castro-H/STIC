@@ -1,4 +1,6 @@
-﻿namespace ApiGateway;
+﻿using System.Net;
+
+namespace ApiGateway;
 
 public class RequestRouter(CustomServiceDiscovery serviceDiscovery, IHttpClientFactory httpClientFactory)
 {
