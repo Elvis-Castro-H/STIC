@@ -27,7 +27,7 @@ public class ProductController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<ProductOutputDto>> GetByIdAsync(int id)
     {
         var entity = await _productService.GetByIdAsync(id);
@@ -47,7 +47,7 @@ public class ProductController : ControllerBase
         return Created($"api/product/{result.Id}", result);
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut("{id}")]
     public async Task<ActionResult<ProductOutputDto>> UpdateAsync(int id, [FromBody] ProductInputDto dto)
     {
         var entity = _mapper.Map<Product>(dto);
@@ -59,7 +59,7 @@ public class ProductController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var success = await _productService.SoftDeleteAsync(id);
