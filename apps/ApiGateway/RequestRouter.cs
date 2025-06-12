@@ -10,24 +10,27 @@ public class RequestRouter(CustomServiceDiscovery serviceDiscovery, IHttpClientF
     {
         var serviceUri = await GetServiceUriAsync(serviceName);
         var downstreamUrl = BuildDownstreamUrl(serviceUri, downstreamPath, queryString);
-        var downstreamRequest = CreateDownstreamRequest(request, downstreamUrl);
 
+        Console.WriteLine($"Forwarding request to: {downstreamUrl}");
+
+        var downstreamRequest = CreateDownstreamRequest(request, downstreamUrl);
         return await SendDownstreamRequestAsync(downstreamRequest);
     }
-
 
     private async Task<string> GetServiceUriAsync(string serviceName)
     {
         var serviceUri = await serviceDiscovery.GetServiceUriAsync(serviceName);
         if (serviceUri == null)
         {
-            throw new Exception($"Service {serviceName} not found in the service registry.");
+            throw new Exception($"Service '{serviceName}' not found in the service registry.");
         }
-        return serviceUri;
+        return serviceUri.TrimEnd('/');
     }
 
     private string BuildDownstreamUrl(string serviceUri, string downstreamPath, string queryString)
     {
+        downstreamPath = downstreamPath.TrimStart('/');
+
         return $"{serviceUri}/{downstreamPath}{queryString}";
     }
 
