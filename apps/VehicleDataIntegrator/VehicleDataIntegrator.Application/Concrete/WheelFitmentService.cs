@@ -42,4 +42,19 @@ public class WheelFitmentService : IWheelDetailsService
 
         return result;
     }
+
+    public async Task<IEnumerable<string>> GetAllMakesAsync()
+    {
+        return await _integration.GetAllMakesAsync();
+    }
+
+    public async Task<IEnumerable<string>> GetModelsByMakeAsync(string make)
+    {
+        return await _integration.GetModelsByMakeAsync(make);
+    }
+
+    public async Task<IEnumerable<int>> GetYearsByMakeAndModelAsync(string make, string model)
+    {
+        return await _integration.GetYearsByMakeAndModelAsync(make, model);
+    }
 }
