@@ -25,18 +25,17 @@ public class GatewayController : ControllerBase
     {
         var method = Request.Method;
         var queryString = Request.QueryString.Value ?? string.Empty;
-        var fullPath = $"/proxy/{serviceName}/{path}";
-
-        _logger.LogInformation("METHOD: {Method}, FULL PATH: {Path}, QUERY: {Query}", method, fullPath, queryString);
-        _logger.LogInformation("ProxyRequest initiated for service: {ServiceName}, path: {Path}", serviceName, path);
-
-        var requestMessage = new HttpRequestMessage(new HttpMethod(method), Request.Path);
-        
+    
+        _logger.LogInformation("METHOD: {Method}, PATH: {Path}, QUERY: {Query}", method, path, queryString);
+        _logger.LogInformation("ProxyRequest initiated for service: {ServiceName}", serviceName);
+    
+        var downstreamRequest = new HttpRequestMessage(new HttpMethod(method), string.Empty);
+    
         foreach (var header in Request.Headers)
         {
-            requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
+            downstreamRequest.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
         }
-        
+    
         if (Request.ContentLength > 0 &&
             (method == HttpMethod.Post.Method || method == HttpMethod.Put.Method || method == HttpMethod.Patch.Method))
         {
@@ -44,21 +43,22 @@ public class GatewayController : ControllerBase
             using var reader = new StreamReader(Request.Body, Encoding.UTF8, leaveOpen: true);
             var body = await reader.ReadToEndAsync();
             Request.Body.Position = 0;
-
-            requestMessage.Content = new StringContent(body, Encoding.UTF8, "application/json");
+    
+            downstreamRequest.Content = new StringContent(body, Encoding.UTF8, "application/json");
         }
-
-        _logger.LogInformation("Request headers: {Headers}", requestMessage.Headers);
-        if (requestMessage.Content != null)
-            _logger.LogInformation("Request content: {Content}", await requestMessage.Content.ReadAsStringAsync());
-        
-        var response = await _requestRouter.RedirectRequestAsync(serviceName, path, requestMessage, queryString);
-
+    
+        _logger.LogInformation("Request headers: {Headers}", downstreamRequest.Headers);
+        if (downstreamRequest.Content != null)
+            _logger.LogInformation("Request content: {Content}", await downstreamRequest.Content.ReadAsStringAsync());
+    
+        var response = await _requestRouter.RedirectRequestAsync(serviceName, path, downstreamRequest, queryString);
+    
         var responseContent = await response.Content.ReadAsStringAsync();
         _logger.LogInformation("Response status code: {StatusCode}", response.StatusCode);
         _logger.LogInformation("Response content: {ResponseContent}", responseContent);
-
+    
         return StatusCode((int)response.StatusCode, responseContent);
     }
+
 
 }
