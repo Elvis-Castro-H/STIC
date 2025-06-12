@@ -30,9 +30,12 @@ public class RequestRouter(CustomServiceDiscovery serviceDiscovery, IHttpClientF
     private string BuildDownstreamUrl(string serviceUri, string downstreamPath, string queryString)
     {
         downstreamPath = downstreamPath.TrimStart('/');
+        
+        serviceUri = serviceUri.Replace(":80", "").TrimEnd('/');
 
         return $"{serviceUri}/{downstreamPath}{queryString}";
     }
+
 
     private HttpRequestMessage CreateDownstreamRequest(HttpRequestMessage originalRequest, string downstreamUrl)
     {
