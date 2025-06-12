@@ -15,24 +15,27 @@ public class WheelDetailsController : ControllerBase
 {
     private readonly IWheelDetailsService _wheelDetailsService;
     private readonly HttpClient _httpClient;
-    private readonly string _eventBusPublishUrl = "http://localhost:5233/api/events/publish"; // Cambia al URL real del Event Bus
+    private readonly string _eventBusPublishUrl;
 
-    public WheelDetailsController(IWheelDetailsService wheelDetailsService)
+    public WheelDetailsController(IWheelDetailsService wheelDetailsService, IConfiguration configuration)
     {
         _wheelDetailsService = wheelDetailsService;
         _httpClient = new HttpClient();
+        _eventBusPublishUrl = Environment.GetEnvironmentVariable("EVENT_BUS_PUBLISH_URL")
+                              ?? throw new InvalidOperationException("EVENT_BUS_PUBLISH_URL no está definido.");
     }
 
     [HttpGet]
     public async Task<ActionResult<List<WheelDetails>>> GetWheelFitments(
         [FromQuery] string make,
         [FromQuery] string model,
-        [FromQuery] int year)
+        [FromQuery] int year,
+        [FromQuery] string? region)
     {
         if (string.IsNullOrWhiteSpace(make) || string.IsNullOrWhiteSpace(model) || year <= 0)
             return BadRequest("Invalid parameters. Make, model, and a valid year are required.");
 
-        var result = await _wheelDetailsService.GetWheelFitmentsAsync(make, model, year);
+        var result = await _wheelDetailsService.GetWheelFitmentsAsync(make, model, year, region);
 
         if (result == null || result.Count == 0)
             return NotFound("No wheel fitment data found for the specified vehicle.");
@@ -74,7 +77,7 @@ public class WheelDetailsController : ControllerBase
         if (string.IsNullOrWhiteSpace(request.Make) || string.IsNullOrWhiteSpace(request.Model) || request.Year <= 0)
             return BadRequest("Parámetros inválidos. Se requieren Make, Model y un Year válido.");
 
-        var fitments = await _wheelDetailsService.GetWheelFitmentsAsync(request.Make, request.Model, request.Year);
+        var fitments = await _wheelDetailsService.GetWheelFitmentsAsync(request.Make, request.Model, request.Year, request.Region);
 
         if (fitments.Count == 0)
             return NotFound("No se encontraron configuraciones de ruedas para el vehículo especificado.");

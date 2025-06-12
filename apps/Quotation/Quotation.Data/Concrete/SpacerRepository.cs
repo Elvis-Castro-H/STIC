@@ -50,7 +50,7 @@ public class SpacerRepository : BaseRepository<Spacer, int>, ISpacerRepository
             throw new Exception("Error publicando evento WheelDetailsRequest");
         }
 
-        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
         using (cts.Token.Register(() => tcs.TrySetCanceled()))
         {
             try

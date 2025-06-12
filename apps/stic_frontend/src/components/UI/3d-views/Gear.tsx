@@ -36,13 +36,21 @@ const GearScene = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Validaciones mínimas para evitar errores en la geometría
+    if (
+      !numTeeth || numTeeth < 2 ||
+      outerDiameter <= 0 || innerDiameter <= 0 ||
+      gearThickness <= 0 || holeDiameter < 0
+    ) {
+      console.warn("⚠️ Parámetros inválidos para GearScene. Render cancelado.");
+      return;
+    }
+
     const container = containerRef.current;
     if (!container) return;
 
     const width = container.clientWidth;
     const height = container.clientHeight;
-
-    const TOOTH_HEIGHT = (outerDiameter - innerDiameter) / 2;
 
     const renderer = new WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -51,7 +59,14 @@ const GearScene = ({
 
     const scene = new Scene();
     const camera = new PerspectiveCamera(45, width / height, 1, 2000);
-    camera.position.set(0, 0, 20);
+    camera.position.set(0, 0, outerDiameter * 2.5);
+    camera.lookAt(0, 0, 0);
+
+    const controlsPosition = new OrbitControls(camera, renderer.domElement);
+    controlsPosition.target.set(0, 0, 0);
+    controlsPosition.update();
+
+
 
     const ambientLight = new AmbientLight(0x666666);
     const directionalLight = new DirectionalLight(0xeeeeee);
@@ -109,6 +124,7 @@ const GearScene = ({
       }
 
       shape.closePath();
+
       const hole = new EllipseCurve(
         0,
         0,
@@ -119,6 +135,7 @@ const GearScene = ({
       );
       const points = hole.getPoints(60);
       shape.holes = [new Path(points)];
+
       return shape;
     };
 
@@ -137,6 +154,7 @@ const GearScene = ({
     const gear = new Mesh(extrudeGeometry, material);
     scene.add(gear);
 
+    // Rotación con mouse
     let isDragging = false;
     let lastMousePosition = { x: 0, y: 0 };
 
@@ -170,6 +188,7 @@ const GearScene = ({
 
     animate();
 
+    // Cleanup
     return () => {
       window.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);

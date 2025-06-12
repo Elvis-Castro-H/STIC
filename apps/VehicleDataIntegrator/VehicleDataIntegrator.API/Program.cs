@@ -1,12 +1,13 @@
 using VehicleDataIntegrator.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApplicationServices(builder.Configuration);
+
+Console.WriteLine("EVENT_BUS_PUBLISH_URL = " + Environment.GetEnvironmentVariable("EVENT_BUS_PUBLISH_URL"));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 

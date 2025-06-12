@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 import { Product } from '@/app/types/Products';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
+//const BASE_URL = process.env.NEXT_PUBLIC_API_URL + "/catalog" || '';
+const BASE_URL = "http://localhost:5189";
 
 /**
  * GET: Fetch all products

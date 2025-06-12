@@ -21,12 +21,6 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Title = "Service Discovery API",
         Description = "API for managing service registration and discovery",
-        Contact = new OpenApiContact
-        {
-            Name = "Your Name",
-            Email = "your-email@example.com",
-            Url = new Uri("https://yourwebsite.com")
-        }
     });
 });
 

@@ -25,7 +25,7 @@ public class GearService : BaseService<Gear, int>, IGearService
 
         if (materialToUse != null)
         {
-            var weight = materialToUse.CalculateWeight(pitchDiameter, materialToUse, outerDiameter, 0);
+            var weight = materialToUse.CalculateWeight(outerDiameter, materialToUse, width, 0);
 
             var totalJobPrice = (materialToUse.PricePerHourMachine + materialToUse.PricePerHourOperator) * toothCount * HoursPerTooth;
 

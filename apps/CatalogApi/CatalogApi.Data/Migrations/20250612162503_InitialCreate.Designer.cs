@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CatalogApi.Data.Migrations
 {
     [DbContext(typeof(PostgreSqlContext))]
-    [Migration("20250608141216_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20250612162503_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,9 @@ namespace CatalogApi.Data.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("CategoryId1")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -109,16 +112,22 @@ namespace CatalogApi.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("CategoryId1");
+
                     b.ToTable("Product", (string)null);
                 });
 
             modelBuilder.Entity("CatalogApi.Domain.Models.Product", b =>
                 {
                     b.HasOne("CatalogApi.Domain.Models.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("CatalogApi.Domain.Models.Category", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId1");
 
                     b.Navigation("Category");
                 });

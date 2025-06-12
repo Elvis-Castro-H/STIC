@@ -13,9 +13,9 @@ public class WheelFitmentService : IWheelDetailsService
         _integration = integration;
     }
 
-    public async Task<List<WheelDetails>> GetWheelFitmentsAsync(string make, string model, int year)
+    public async Task<List<WheelDetails>> GetWheelFitmentsAsync(string make, string model, int year, string? region)
     {
-        var rawData = await _integration.GetWheelFitmentAsync(make, model, year);
+        var rawData = await _integration.GetWheelFitmentAsync(make, model, year, region);
 
         var grouped = rawData
             .GroupBy(d => new

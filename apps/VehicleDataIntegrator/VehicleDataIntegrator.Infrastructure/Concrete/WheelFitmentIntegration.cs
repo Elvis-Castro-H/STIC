@@ -16,17 +16,49 @@ public class WheelFitmentIntegration : IWheelDetailsIntegration
         _settings = settings.Value;
     }
 
-    public async Task<IEnumerable<WheelDetails>> GetWheelFitmentAsync(string make, string model, int year)
+    public async Task<IEnumerable<WheelDetails>> GetWheelFitmentAsync(string make, string model, int year, string? region = null)
     {
-        var url = BuildRequestUrl(make, model, year);
-        var json = await GetJsonResponseAsync(url);
-        return ParseWheelFitments(json);
+        if (!string.IsNullOrEmpty(region))
+        {
+            var url = BuildRequestUrl(make, model, year, region);
+            var json = await GetJsonResponseAsync(url);
+            return ParseWheelFitments(json);
+        }
+
+        // Prueba con múltiples regiones si no se especifica
+        var regionsToTry = new[]
+        {
+            "usdm","cdm","mxndm","ladm","eudm","russia",
+            "jdm","chdm","skdm","sam","medm","nadm","sadm","audm"};
+
+        foreach (var regionAttempt in regionsToTry)
+        {
+            try
+            {
+                var url = BuildRequestUrl(make, model, year, regionAttempt);
+                var json = await GetJsonResponseAsync(url);
+                var results = ParseWheelFitments(json);
+                if (results.Any())
+                {
+                    return results;
+                }
+            }
+            catch (HttpRequestException ex) when (ex.Message.Contains("404"))
+            {
+                // Si no se encuentra, prueba la siguiente región
+                continue;
+            }
+        }
+
+        // Si ninguna región devuelve resultados válidos
+        return Enumerable.Empty<WheelDetails>();
     }
 
-    private string BuildRequestUrl(string make, string model, int year)
+    private string BuildRequestUrl(string make, string model, int year, string region)
     {
-        return $"{_settings.BaseUrl}/search/by_model/?user_key={_settings.ApiKey}&region=usdm&make={make}&model={model}&year={year}";
+        return $"{_settings.BaseUrl}/search/by_model/?user_key={_settings.ApiKey}&region={region}&make={make}&model={model}&year={year}";
     }
+
 
     private async Task<string> GetJsonResponseAsync(string url)
     {

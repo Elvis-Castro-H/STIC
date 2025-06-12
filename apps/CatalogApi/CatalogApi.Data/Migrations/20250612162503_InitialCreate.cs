@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CatalogApi.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -44,6 +44,7 @@ namespace CatalogApi.Data.Migrations
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
                     Stock = table.Column<int>(type: "integer", nullable: false),
                     Details = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    CategoryId1 = table.Column<int>(type: "integer", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -56,12 +57,22 @@ namespace CatalogApi.Data.Migrations
                         principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Product_Category_CategoryId1",
+                        column: x => x.CategoryId1,
+                        principalTable: "Category",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_CategoryId",
                 table: "Product",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_CategoryId1",
+                table: "Product",
+                column: "CategoryId1");
         }
 
         /// <inheritdoc />
