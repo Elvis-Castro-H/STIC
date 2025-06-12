@@ -92,4 +92,79 @@ public class WheelFitmentIntegration : IWheelDetailsIntegration
 
         return results;
     }
+    
+    public async Task<IEnumerable<string>> GetAllMakesAsync()
+    {
+        var url = $"{_settings.BaseUrl}/makes/?user_key={_settings.ApiKey}";
+        var json = await GetJsonResponseAsync(url);
+
+        using var doc = JsonDocument.Parse(json);
+        var root = doc.RootElement;
+
+        var makes = new List<string>();
+
+        if (root.TryGetProperty("data", out var makesArray) && makesArray.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var item in makesArray.EnumerateArray())
+            {
+                if (item.TryGetProperty("name", out var nameProp))
+                {
+                    makes.Add(nameProp.GetString());
+                }
+            }
+        }
+
+        return makes;
+    }
+
+    
+    public async Task<IEnumerable<string>> GetModelsByMakeAsync(string make)
+    {
+        var url = $"{_settings.BaseUrl}/models/?make={make}&user_key={_settings.ApiKey}";
+        var json = await GetJsonResponseAsync(url);
+
+        using var doc = JsonDocument.Parse(json);
+        var root = doc.RootElement;
+
+        var models = new List<string>();
+
+        if (root.TryGetProperty("data", out var modelsArray) && modelsArray.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var item in modelsArray.EnumerateArray())
+            {
+                if (item.TryGetProperty("name", out var nameProp))
+                {
+                    models.Add(nameProp.GetString());
+                }
+            }
+        }
+
+        return models;
+    }
+
+
+    public async Task<IEnumerable<int>> GetYearsByMakeAndModelAsync(string make, string model)
+    {
+        var url = $"{_settings.BaseUrl}/years/?make={make}&model={model}&user_key={_settings.ApiKey}";
+        var json = await GetJsonResponseAsync(url);
+
+        using var doc = JsonDocument.Parse(json);
+        var root = doc.RootElement;
+
+        var years = new List<int>();
+
+        if (root.TryGetProperty("data", out var dataArray) && dataArray.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var item in dataArray.EnumerateArray())
+            {
+                if (item.TryGetProperty("name", out var yearProp) && yearProp.TryGetInt32(out var year))
+                {
+                    years.Add(year);
+                }
+            }
+        }
+
+        return years.OrderByDescending(y => y);
+    }
+
 }
