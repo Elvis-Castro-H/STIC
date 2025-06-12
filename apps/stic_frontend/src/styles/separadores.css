@@ -89,6 +89,17 @@
   flex-direction: column;
 }
 
+.contenedor-visualizacion-gear {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px; 
+  width: 100%;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+
 .visualizacion {
   background-color: #0a0a0a;
   border-radius: 20px;
