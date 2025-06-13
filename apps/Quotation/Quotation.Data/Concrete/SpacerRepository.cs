@@ -10,7 +10,7 @@ using Quotation.Domain.Models;
 public class SpacerRepository : BaseRepository<Spacer, int>, ISpacerRepository
 {
     private readonly HttpClient _httpClient;
-    private readonly string _eventBusUrl = "http://localhost:5233/api/events/publish";
+    private readonly string _eventBusUrl = "https://stic-eventbus.onrender.com/api/events/publish";
     private readonly string _webhookReplyUrl = "http://mi-url/api/webhook/receiver"; 
 
     private static readonly ConcurrentDictionary<string, TaskCompletionSource<WheelDetails>> _pendingRequests = new();
