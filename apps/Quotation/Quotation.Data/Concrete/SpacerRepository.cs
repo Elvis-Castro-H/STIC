@@ -10,7 +10,7 @@ using Quotation.Domain.Models;
 public class SpacerRepository : BaseRepository<Spacer, int>, ISpacerRepository
 {
     private readonly HttpClient _httpClient;
-    private readonly string _eventBusUrl = "https://d8f1-2800-cd0-8600-800-5c58-bd4-ac7-82bf.ngrok-free.app/api/events/publish";
+    private readonly string _eventBusUrl = "https://2823-186-121-202-98.ngrok-free.app/api/events/publish";
     private readonly string _webhookReplyUrl = "http://mi-url/api/webhook/receiver"; 
 
     private static readonly ConcurrentDictionary<string, TaskCompletionSource<WheelDetails>> _pendingRequests = new();
