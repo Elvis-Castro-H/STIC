@@ -15,7 +15,9 @@ import {
   SRGBColorSpace,
   Group,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
+// @ts-ignore
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 type PulleySceneProps = {
   radius?: number;

@@ -3,10 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
-import { useFirebaseUser } from "../../hooks/useFirebaseUser";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-// Types for react-hook-form validation
 type Inputs = {
   fullname: string;
   email: string;
@@ -14,7 +12,6 @@ type Inputs = {
 };
 
 export default function SignupForm() {
-  const { registerWithFirebase } = useFirebaseUser();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState('');
@@ -29,19 +26,26 @@ export default function SignupForm() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log('Formulario enviado');
     console.log('Datos enviados:', data);
-    setLoading(true);
+
     setError('');
-    
+    setLoading(true);
+
     try {
-      await registerWithFirebase(data.email, data.password, data.fullname);
-    } catch (err) {
-      setError('Hubo un error al crear la cuenta. Intenta de nuevo.');
-      console.error(err);
+      // 🔧 Simula el registro del usuario (ej. puedes enviar estos datos a una API)
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // simula retraso
+
+      if (!accepted) {
+        throw new Error('Debes aceptar los términos y condiciones');
+      }
+
+      // Aquí podrías redirigir o guardar el usuario en tu sistema
+      console.log('Usuario registrado exitosamente');
+    } catch (err: any) {
+      setError(err.message || 'Hubo un error al crear la cuenta.');
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <div className="container-auth">
@@ -73,7 +77,6 @@ export default function SignupForm() {
             })}
           />
           {errors.email && <span>{errors.email.message}</span>}
-          {errors.email?.type === "pattern" && <p role="alert">Debe ser un email válido</p>}
 
           {/* Contraseña */}
           <div className="password-container">
@@ -106,8 +109,8 @@ export default function SignupForm() {
           {/* Botón de registro */}
           <button 
             type="submit" 
-            className="auth-button" 
-            onClick={() => console.log('Botón clickeado')}
+            className="auth-button"
+            disabled={loading}
           >
             {loading ? 'Cargando...' : 'Registrarse'}
           </button>

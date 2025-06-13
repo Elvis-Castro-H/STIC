@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import "../../styles/separadores.css";
-import PulleyScene from "../UI/3d-views/Pulley";
+import GearScene from "../UI/3d-views/Gear";
 import { calculatePulleyQuotation } from "@/app/services/pulleyQuotationService";
 import { fetchMaterials } from "@/app/services/MaterialService";
 import { Material } from "@/app/types/Materials";
@@ -36,7 +36,7 @@ export default function PoleasPage() {
     const data = {
       outerDiameter: parseFloat(diametroExterior),
       innerBoreDiameter: parseFloat(diametroHueco),
-      width: 3, // puedes permitir al usuario ingresar el espesor si lo necesitas
+      width: 3, 
       grooveCount: parseInt(numCanales),
       grooveType: tipoCanal,
       material: material,
@@ -139,11 +139,12 @@ export default function PoleasPage() {
             style={{ margin: 0, padding: 0, height: "50vh" }}
           >
             {cotizacion ? (
-              <PulleyScene
-                diametroExterior={cotizacion.outerDiameter}
-                diametroHuecoInterior={cotizacion.innerBoreDiameter}
-                numeroCanales={cotizacion.grooveCount}
-                tipoDeCanal={cotizacion.grooveType}
+              <GearScene
+                numTeeth={0}
+                outerDiameter={300}
+                innerDiameter={300}
+                gearThickness={25}
+                holeDiameter={25}
               />
             ) : (
               <div style={{ padding: "2rem", textAlign: "center", color: "#aaa" }}>

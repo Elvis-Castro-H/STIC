@@ -14,9 +14,13 @@ import {
   Group,
   SRGBColorSpace,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
+// @ts-ignore
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+// @ts-ignore
+import { FontLoader, Font } from "three/examples/jsm/loaders/FontLoader";
+// @ts-ignore
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
+
 
 type SpacerProps = {
   studCount?: number;
@@ -150,7 +154,7 @@ scene.add(steppedHoleGroup);
     }
 
     const loader = new FontLoader();
-    loader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
+    loader.load("/fonts/helvetiker_regular.typeface.json", (font: Font) => {
       const textLines = ["S T I C", "62642431", "S T I C"];
       const textMaterial = new MeshPhongMaterial({ color: 0xffffff });
 
