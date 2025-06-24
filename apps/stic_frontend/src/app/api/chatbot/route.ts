@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
 //const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
-const BASE_URL = 'https://2763-186-121-202-98.ngrok-free.app';
+const BASE_URL = ' https://eb29-2a09-bac5-554-791-00-c1-51.ngrok-free.app';
 
 export async function POST(req: NextRequest) {
   try {
