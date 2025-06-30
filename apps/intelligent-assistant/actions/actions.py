@@ -37,7 +37,7 @@ class ActionProcesarCotizacionEngranaje(Action):
             "material": material
         }
 
-        url = "http://localhost:5267/api/quotation/Gear/calculate-price"
+        url = "https://stic-quotation.onrender.com/api/quotation/Gear/calculate-price"
         headers = {
             "accept": "text/plain",
             "Content-Type": "application/json"
@@ -88,7 +88,7 @@ class ActionProcesarCotizacionSeparador(Action):
             "material": material
         }
 
-        url = "http://localhost:5267/api/quotation/Spacer/calculate-price"
+        url = "https://stic-quotation.onrender.com/api/quotation/Spacer/calculate-price"
         headers = {
             "accept": "text/plain",
             "Content-Type": "application/json"
@@ -140,7 +140,7 @@ class ActionProcesarCotizacionPolea(Action):
             "grooveType": tipo_de_canal.upper()
         }
 
-        url = "http://localhost:5267/api/quotation/Pulley/calculate-price"
+        url = "https://stic-quotation.onrender.com/api/quotation/Pulley/calculate-price"
         headers = {
             "accept": "text/plain",
             "Content-Type": "application/json"
