@@ -1,3 +1,4 @@
+using System.Net;
 using DotNetEnv;
 
 namespace ApiGateway;
@@ -17,6 +18,17 @@ public class Program
                 webBuilder.ConfigureServices((context, services) =>
                 {
                     services.AddHttpClient<CustomServiceDiscovery>();
+
+                    services.AddHttpClient("router")
+                    .ConfigurePrimaryHttpMessageHandler(() =>
+                        new HttpClientHandler
+                        {   
+                            
+                            AutomaticDecompression =
+                                DecompressionMethods.GZip
+                                | DecompressionMethods.Deflate
+                                | DecompressionMethods.Brotli
+                        });
                     
                     services.AddSingleton<RequestRouter>();
                     

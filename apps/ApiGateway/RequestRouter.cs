@@ -4,7 +4,7 @@ namespace ApiGateway;
 
 public class RequestRouter(CustomServiceDiscovery serviceDiscovery, IHttpClientFactory httpClientFactory)
 {
-    private readonly HttpClient _httpClient = httpClientFactory.CreateClient();
+    private readonly HttpClient _httpClient = httpClientFactory.CreateClient("router");
 
     public async Task<HttpResponseMessage> RedirectRequestAsync(string serviceName, string downstreamPath, HttpRequestMessage request, string queryString)
     {
