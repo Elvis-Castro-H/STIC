@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-//const BASE_URL = process.env.NEXT_PUBLIC_API_URL + "/catalog" || '';
-const BASE_URL = "https://stic-catalog.onrender.com";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL + "/catalog" || '';
 
 /**
  * Fetches the all categories for the database

@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import axios from 'axios'
 import { Product } from '@/app/types/Products'
 
-//const BASE_URL = process.env.NEXT_PUBLIC_API_URL + "/catalog" || ''
-const BASE_URL = "https://stic-catalog.onrender.com";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL + "/catalog" || ''
 
 export async function GET(req: NextRequest, ctx: any) {
   const id = ctx.params?.id

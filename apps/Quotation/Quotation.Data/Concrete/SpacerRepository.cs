@@ -10,14 +10,15 @@ using Quotation.Domain.Models;
 public class SpacerRepository : BaseRepository<Spacer, int>, ISpacerRepository
 {
     private readonly HttpClient _httpClient;
-    private readonly string _eventBusUrl = "https://1851-2a09-bac1-1020-10-00-c1-9d.ngrok-free.app/api/events/publish";
-    private readonly string _webhookReplyUrl = "http://mi-url/api/webhook/receiver"; 
+    private readonly string _eventBusUrl;
 
     private static readonly ConcurrentDictionary<string, TaskCompletionSource<WheelDetails>> _pendingRequests = new();
 
     public SpacerRepository(PostgreSqlContext dbContext, HttpClient httpClient) : base(dbContext)
     {
         _httpClient = httpClient;
+        _eventBusUrl = Environment.GetEnvironmentVariable("EVENT_BUS_URL") 
+                       ?? throw new InvalidOperationException("Missing environment variable: EVENT_BUS_URL");
     }
 
     public async Task<WheelDetails> GetWheelDetails(string make, string model, int year)
@@ -32,7 +33,6 @@ public class SpacerRepository : BaseRepository<Spacer, int>, ISpacerRepository
                 Make = make,
                 Model = model,
                 Year = year,
-                ReplyTo = _webhookReplyUrl,
                 CorrelationId = correlationId,
             }
         };
@@ -47,7 +47,7 @@ public class SpacerRepository : BaseRepository<Spacer, int>, ISpacerRepository
         if (!response.IsSuccessStatusCode)
         {
             _pendingRequests.TryRemove(correlationId, out _);
-            throw new Exception("Error publicando evento WheelDetailsRequest");
+            throw new Exception("Error publishing event WheelDetailsRequest");
         }
 
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
@@ -60,7 +60,7 @@ public class SpacerRepository : BaseRepository<Spacer, int>, ISpacerRepository
             catch (TaskCanceledException)
             {
                 _pendingRequests.TryRemove(correlationId, out _);
-                throw new Exception("Timeout esperando detalles de rueda");
+                throw new Exception("Timeout waiting wheel details");
             }
         }
     }
