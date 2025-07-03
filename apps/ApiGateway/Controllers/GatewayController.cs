@@ -33,6 +33,8 @@ public class GatewayController : ControllerBase
     
         foreach (var header in Request.Headers)
         {
+            if (header.Key.Equals("Host", StringComparison.OrdinalIgnoreCase))
+                continue; 
             downstreamRequest.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
         }
     
