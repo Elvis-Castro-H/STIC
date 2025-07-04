@@ -1,10 +1,3 @@
-// PulleyScene.tsx  –  v2.5
-//
-//  - rearFlangeRatio   (0–1)  ancho pestaña posterior / land
-//  - frontFlangeRatio  (0–1)  ancho pestaña frontal  / land
-//  - noShading         true ⇒ MeshBasicMaterial + sin luces
-//
-
 "use client";
 import { useEffect, useRef } from "react";
 import {
@@ -25,7 +18,6 @@ import {
 // @ts-ignore – three/examples no tiene defs
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-/*──────── Perfiles clásicos ────────*/
 const belt = {
   A: { w: 12.0, h: 7.9 },
   B: { w: 15.9, h: 10.3 },
@@ -33,19 +25,18 @@ const belt = {
 } as const;
 type BeltType = keyof typeof belt;
 
-/*──────── Props ────────*/
 export interface PulleySceneProps {
   outerDiameter?: number;
   holeDiameter?: number;
   numGrooves?: number;
   beltType?: BeltType;
-  landRatio?: number;         // 0.3-0.5
-  flatRatio?: number;         // 0-0.2
-  rearFlangeRatio?: number;   // 0-1
-  frontFlangeRatio?: number;  // 0-1
-  hubRadiusRatio?: number;    // 0.5-0.8
-  hubLength?: number;         // mm (0 → 30 % Ø)
-  noShading?: boolean;        // true = sin luces
+  landRatio?: number;         
+  flatRatio?: number;         
+  rearFlangeRatio?: number;   
+  frontFlangeRatio?: number;  
+  hubRadiusRatio?: number;    
+  hubLength?: number;         
+  noShading?: boolean;        
 }
 
 const PulleyScene = ({
@@ -55,8 +46,8 @@ const PulleyScene = ({
   beltType          = "B",
   landRatio         = 0.4,
   flatRatio         = 0.15,
-  rearFlangeRatio   = 0.6,   // pestaña trasera fina
-  frontFlangeRatio  = 1.0,   // pestaña frontal = land
+  rearFlangeRatio   = 0.6,   
+  frontFlangeRatio  = 1.0,   
   hubRadiusRatio    = 0.6,
   hubLength         = 0,
   noShading         = false,
@@ -67,7 +58,6 @@ const PulleyScene = ({
     const spec = belt[beltType];
     if (!spec || numGrooves < 1 || outerDiameter <= holeDiameter) return;
 
-    /*── Dimensiones base ────────────────────*/
     const W = spec.w;
     const H = spec.h;
 
@@ -87,7 +77,6 @@ const PulleyScene = ({
     const hubLen = hubLength || outerDiameter * 0.3;
     const hubRad = Rext * hubRadiusRatio;
 
-    /*── Three.js setup ──────────────────────*/
     const el = mount.current;
     if (!el) return;
     const w = el.clientWidth;
@@ -111,16 +100,13 @@ const PulleyScene = ({
       scene.add(dir);
     }
 
-    /*── Perfil radius-axial ──────────────────*/
     const pts: Vector2[] = [];
     const yFrontFlange = -bodyHalf - flangeFrontW;
     const yGrooveStart = -bodyHalf;
 
-    // flange frontal
     pts.push(new Vector2(Rskin, yFrontFlange));
     pts.push(new Vector2(Rskin, yGrooveStart));
 
-    // canales
     for (let g = 0; g < numGrooves; g++) {
       const base = yGrooveStart + g * pitch;
       const y0 = base;
@@ -136,13 +122,11 @@ const PulleyScene = ({
       pts.push(new Vector2(Rskin, y4));
     }
 
-    // flange trasero
     const yRearStart = bodyHalf;
     const yRearEnd   = bodyHalf + flangeRearW;
     pts.push(new Vector2(Rskin, yRearStart));
     pts.push(new Vector2(Rskin, yRearEnd));
 
-    // eje y cierre
     pts.push(new Vector2(Rint, yRearEnd));
     pts.push(new Vector2(Rint, yFrontFlange));
     pts.push(new Vector2(Rskin, yFrontFlange));
@@ -150,7 +134,6 @@ const PulleyScene = ({
     const segs = Math.max(128, Math.round(Rext));
     const bodyGeo = new LatheGeometry(pts, segs);
 
-    /*── Cubo lateral ─────────────────────────*/
     const hubY0 = yRearEnd;
     const hubY1 = hubY0 + hubLen;
     const hubPts: Vector2[] = [
@@ -162,7 +145,6 @@ const PulleyScene = ({
     ];
     const hubGeo = new LatheGeometry(hubPts, segs);
 
-    /*── Material sin/sombreado ───────────────*/
     const grey = 0xd0d0d3;
     const mat = noShading
       ? new MeshBasicMaterial({ color: grey })
@@ -174,7 +156,6 @@ const PulleyScene = ({
     hub.rotateX(Math.PI / 2);
     scene.add(body, hub);
 
-    /*── Loop ────────────────────────────────*/
     const loop = () => {
       controls.update();
       renderer.render(scene, cam);
@@ -182,7 +163,6 @@ const PulleyScene = ({
     };
     loop();
 
-    /*── Cleanup ─────────────────────────────*/
     return () => {
       renderer.dispose();
       el.removeChild(renderer.domElement);
