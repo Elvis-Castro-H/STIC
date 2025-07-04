@@ -6,6 +6,7 @@ import { calculatePulleyQuotation } from "@/app/services/pulleyQuotationService"
 import { fetchMaterials } from "@/app/services/MaterialService";
 import { Material } from "@/app/types/Materials";
 import { PulleyQuotationResponse } from "@/app/types/Pulleys";
+import PulleyScene from "../UI/3d-views/Pulley";
 
 export default function PoleasPage() {
   const [diametroExterior, setDiametroExterior] = useState("");
@@ -139,12 +140,15 @@ export default function PoleasPage() {
             style={{ margin: 0, padding: 0, height: "50vh" }}
           >
             {cotizacion ? (
-              <GearScene
-                numTeeth={0}
-                outerDiameter={300}
-                innerDiameter={300}
-                gearThickness={25}
-                holeDiameter={25}
+              <PulleyScene
+                outerDiameter={Number(diametroExterior)}
+                holeDiameter={Number(diametroHueco)}
+                numGrooves={Number(numCanales)}
+                beltType={tipoCanal as "A"|"B"|"C"}
+                landRatio={0.35}
+                rearFlangeRatio={1}  
+                frontFlangeRatio={0.3}
+                noShading={false}     
               />
             ) : (
               <div style={{ padding: "2rem", textAlign: "center", color: "#aaa" }}>
