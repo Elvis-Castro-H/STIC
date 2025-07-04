@@ -46,4 +46,21 @@ public class EventsController : ControllerBase
             return BadRequest(new { message = "Invalid JSON format", error = ex.Message });
         }
     }
+
+    [HttpGet("subscriptions")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetSubscriptions()
+    {
+        var subs = await _subscriptionService.GetAllSubscriptionsAsync();
+
+        var grouped = subs
+            .GroupBy(s => s.EventType)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Select(s => s.CallbackUrl)
+                    .Distinct()
+                    .ToList());
+
+        return Ok(grouped);
+    }
 }
