@@ -14,4 +14,4 @@ RUN rasa train
 EXPOSE 5005
 
 #CMD ["sh", "-c", "echo PORT=$PORT5000 && rasa run -m models --enable-api --cors '*' --interface 0.0.0.0 --port ${PORT} --endpoints endpoints.yml"]
-CMD ["rasa run -m models --enable-api --cors '*' --interface 0.0.0.0 --endpoints endpoints.yml --port 5005"]
+CMD ["run -m models --enable-api --cors '*' --interface 0.0.0.0 --endpoints endpoints.yml --port 5005"]
