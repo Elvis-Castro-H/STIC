@@ -13,9 +13,4 @@ RUN rasa train
 ENV PORT=5005
 EXPOSE 5005
 
-CMD ["rasa", "run",
-     "-m", "models",
-     "--enable-api",
-     "--cors", "*",
-     "--port", "5005",
-     "--endpoints", "endpoints.yml"]
+CMD ["rasa", "run", "-m", "models", "--enable-api", "--cors", "*", "--port", "5005", "--endpoints", "endpoints.yml"]
