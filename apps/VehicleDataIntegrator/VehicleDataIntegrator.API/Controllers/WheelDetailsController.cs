@@ -21,8 +21,9 @@ public class WheelDetailsController : ControllerBase
     {
         _wheelDetailsService = wheelDetailsService;
         _httpClient = new HttpClient();
-        _eventBusPublishUrl = Environment.GetEnvironmentVariable("EVENT_BUS_PUBLISH_URL")
-                              ?? throw new InvalidOperationException("EVENT_BUS_PUBLISH_URL no está definido.");
+        //_eventBusPublishUrl = Environment.GetEnvironmentVariable("EVENT_BUS_PUBLISH_URL")
+        //                    ?? throw new InvalidOperationException("EVENT_BUS_PUBLISH_URL no está definido.");
+        _eventBusPublishUrl = "http://localhost:5233/api/events/publish";
     }
 
     [HttpGet]
@@ -73,6 +74,7 @@ public class WheelDetailsController : ControllerBase
     [HttpPost("request")]
     public async Task<IActionResult> HandleWheelDetailsRequest([FromBody] EventWrapper eventWrapper)
     {
+        Console.WriteLine("Received WheelDetailsRequest event: " + eventWrapper.Data);
         var request = eventWrapper.Data;
         if (string.IsNullOrWhiteSpace(request.Make) || string.IsNullOrWhiteSpace(request.Model) || request.Year <= 0)
             return BadRequest("Parámetros inválidos. Se requieren Make, Model y un Year válido.");
