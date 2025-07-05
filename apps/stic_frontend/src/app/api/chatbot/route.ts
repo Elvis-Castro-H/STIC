@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
-//const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
-const BASE_URL = 'https://047b-2a09-bac1-1020-10-00-c1-9d.ngrok-free.app';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL + "/chatbot" || '';
 
 export async function POST(req: NextRequest) {
   try {
