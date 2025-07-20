@@ -62,6 +62,35 @@ nlu:
     - mi autito es un [toyota]{"entity": "marca", "value": "Toyota"} [hilux]{"entity": "modelo", "value": "Hilux"} [2004](anio)
     - mi autito es un [toyota]{"entity": "marca", "value": "Toyota"} [tacoma]{"entity": "modelo", "value": "Tacoma"} [2022](anio)
     - ahh.. mi auto creo que es un [ford]{"entity": "marca", "value": "Ford"} [explorer]{"entity": "modelo", "value": "Explorer"} [1999](anio)
+    - mi auto es [Toyota](marca)
+    - mi auto es un [Levin](modelo)
+    - mi auto es del [98](anio)
+    - mi auto es un [Toyota](marca) del [98](anio)
+    - tengo un [Toyota](marca) [Corolla](modelo)
+    - mi coche es un [Civic](modelo) del [2015](anio)
+    - mi [Honda](marca) es del [2016](anio)
+    - mi auto es un [Ford](marca) de [2005](anio)
+    - el coche es un [Mazda](marca), creo que es un [3](modelo)
+    - mi auto es un [Nissan](marca), no recuerdo el modelo
+    - tengo un auto [Chevrolet](marca) de [2010](anio)
+    - el auto es un [Toyota](marca) [Hilux](modelo), no sé el año
+    - el coche es un [Renault](marca) [Clio](modelo), pero no sé si es del [2018](anio) o [2019](anio)
+    - mi auto es un [Toyota](marca) del [2014](anio), no recuerdo el modelo
+    - [BMW](marca) del [2020](anio), no sé si el modelo es [X5](modelo) o [X3](modelo)
+    - tengo un [Honda](marca) pero no recuerdo el modelo, sólo sé que es del [2017](anio)
+    - mi auto es un [Ford](marca) [Mustang](modelo), pero no recuerdo si es del [2015](anio) o [2016](anio)
+    - mi coche es un [Chevrolet](marca) [Malibu](modelo) pero no sé el año exacto
+    - el auto es un [Kia](marca) [Sportage](modelo), no estoy seguro si es del [2019](anio) o [2020](anio)
+    - mi auto es un [Toyota](marca) [RAV4](modelo), pero no sé si es de [2019](anio) o [2020](anio)
+    - mi coche es un [Honda](marca) [Accord](modelo), el año es [2018](anio), no recuerdo si es el modelo básico o sport
+    - tengo un [Chevrolet](marca), no sé si es [Cruze](modelo) o [Sonic](modelo), pero creo que es del [2014](anio)
+    - el coche es un [Nissan](marca), pero no estoy seguro si el modelo es [Altima](modelo) o [Maxima](modelo)
+    - [Volkswagen](marca) [Passat](modelo), no estoy seguro si es del [2016](anio) o [2017](anio)
+    - el coche es un [Hyundai](marca), [Elantra](modelo), pero no recuerdo el año
+    - [Toyota](marca), no recuerdo el modelo, pero sé que es de [2021](anio)
+    - mi coche es un [Ford](marca), y es del [2008](anio), pero no sé si el modelo es [Fiesta](modelo) o [Focus](modelo)
+    - [Mazda](marca) [CX-5](modelo), no sé si es del [2017](anio) o [2018](anio)
+    - mi auto es un [Chevrolet](marca), pero no sé si es [Malibu](modelo) o [Cruze](modelo), creo que es del [2015](anio)
 - intent: proporcionar_datos_polea
   examples: |
     - la polea tiene [180](diametro_exterior) mm exterior, [30](diametro_hueco_interior) mm interior, [2](numero_canales) canales tipo [B](tipo_de_canal)
