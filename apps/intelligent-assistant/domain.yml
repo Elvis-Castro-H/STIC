@@ -13,6 +13,8 @@ entities:
 - modelo
 - anio
 - marca
+- espesor
+- material
 - num_dientes
 - diametro_interior
 - diametro_exterior
@@ -56,25 +58,35 @@ slots:
   marca:
     type: text
     mappings:
-    - type: from_entity
+    - type: custom
       entity: marca
   modelo:
     type: text
     mappings:
-    - type: from_entity
+    - type: custom
       entity: modelo
   anio:
     type: text
     mappings:
-    - type: from_entity
+    - type: custom
       entity: anio
+  espesor:
+    type: text
+    mappings:
+    - type: custom
+      entity: espesor
+  material:
+    type: text
+    mappings:
+    - type: custom
+      entity: material
 responses:
   utter_saludar:
   - text: ¡Hola! ¿En qué puedo ayudarte? Puedo cotizar engranajes o separadores de aro.
   utter_pedir_datos_engranaje:
   - text: 'Por favor, proporciona los siguientes datos del engranaje: número de dientes, diámetro exterior (en mm) y diámetro interior (en mm).'
   utter_pedir_datos_separador:
-  - text: Por favor, proporciona la marca, modelo y año del vehículo para el separador de aro.
+  - text: Por favor, proporciona la marca, modelo y año del vehículo para el separador de aro, además el espesor que deseas y el material.
   utter_cotizacion_enviada:
   - text: '¡Gracias! He enviado los datos para obtener la cotización. El precio es: {precio}'
   utter_despedir:
