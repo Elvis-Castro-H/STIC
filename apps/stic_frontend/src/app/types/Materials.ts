@@ -6,3 +6,11 @@ export type Material = {
   pricePerHourMachine: number;
   pricePerHourOperator: number;
 };
+
+export type MaterialPUT = {  
+  name: string;
+  density: number;
+  pricePerKg: number;
+  pricePerHourMachine: number;
+  pricePerHourOperator: number;
+};

@@ -52,6 +52,51 @@ export default function EngranajesPage() {
     setIsCalculating(false);
   };
 
+  const generarPDFEngranaje = async () => {
+  if (!cotizacion) return;
+
+  const html2pdf = (await import("html2pdf.js")).default;
+
+  // Carga la plantilla del HTML
+  const htmlResp = await fetch("/pdf/cotizacion-engranaje.html");
+  const htmlTemplate = await htmlResp.text();
+
+  // Reemplaza los placeholders
+  const htmlWithData = htmlTemplate
+    .replace("{{fecha}}", new Date().toLocaleDateString())
+    .replace("{{diametroExterior}}", diametroExterior)
+    .replace("{{diametroHueco}}", diametroHueco)
+    .replace("{{alturaDiente}}", alturaDiente)
+    .replace("{{espesor}}", espesor)
+    .replace("{{numDientes}}", numDientes)
+    .replace("{{tipoEngranaje}}", tipoEngranaje)
+    .replace("{{material}}", material)
+    .replace("{{precio}}", cotizacion.price.toFixed(2))
+    .replace("{{timestamp}}", Date.now().toString());
+
+  // Accede al iframe
+  const iframe = document.getElementById("iframe-engranaje") as HTMLIFrameElement;
+  const doc = iframe.contentDocument || iframe.contentWindow?.document;
+  if (!doc) return;
+
+  doc.open();
+  doc.write(htmlWithData);
+  doc.close();
+
+  iframe.onload = () => {
+    const content = iframe.contentDocument?.body;
+    if (!content) return;
+
+    html2pdf().set({
+      margin: 0,
+      filename: `ENGRANAJE_${tipoEngranaje}_${Date.now()}.pdf`,
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    }).from(content).save();
+  };
+};
+
+
   return (
     <div className="contenedor-principal">
       <h1 className="titulo">Engranajes</h1>
@@ -70,7 +115,7 @@ export default function EngranajesPage() {
           </div>
 
           <div style={{ marginBottom: "1.5rem" }}>
-            <label className="label">Diámetro del hueco interior (pitch) (mm)</label>
+            <label className="label">Diámetro del hueco interior (mm)</label>
             <input
               type="number"
               className="select"
@@ -169,7 +214,15 @@ export default function EngranajesPage() {
         <button className="btn-rojo" disabled={isCalculating} onClick={handleCalculate}>
           {isCalculating ? "Calculando..." : "Diseño completado"}
         </button>
+      {cotizacion && (
+        <button className="btn-outline" onClick={generarPDFEngranaje}>
+          Descargar PDF
+        </button>
+      )}
       </div>
+
+      <iframe id="iframe-engranaje" style={{ display: "none" }} />
+
     </div>
   );
 }

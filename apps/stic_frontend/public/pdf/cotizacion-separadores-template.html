@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cotización</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        margin: 40px;
+        color: #000;
+      }
+
+      .cotizacion-container {
+        max-width: 700px;
+        margin: auto;
+      }
+
+      .logo {
+        width: 120px;
+        display: block;
+        margin: 0 auto 20px auto;
+      }
+
+      .titulo {
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      .detalles {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 20px;
+      }
+
+      .detalles li {
+        margin-bottom: 5px;
+      }
+
+      .preview {
+        width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+      }
+
+      .footer {
+        margin-top: 30px;
+        font-size: 10px;
+        color: #555;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cotizacion-container">
+      <img class="logo" src="{{logo}}" alt="Logo de STIC" />
+      <h1 class="titulo">Cotización de Separador</h1>
+
+      <p><strong>ID Cotización:</strong> COT-{{timestamp}}</p>
+      <p><strong>Fecha:</strong> {{fecha}}</p>
+
+      <ul class="detalles">
+        <li><strong>Marca:</strong> {{marca}}</li>
+        <li><strong>Modelo:</strong> {{modelo}}</li>
+        <li><strong>Año:</strong> {{anio}}</li>
+        <li><strong>Espesor:</strong> {{espesor}}"</li>
+        <li><strong>Material:</strong> {{material}}</li>
+        <li><strong>Patrón de pernos:</strong> {{patron}}</li>
+        <li><strong>Centro:</strong> {{centro}} mm</li>
+        <li><strong>Tornillos:</strong> {{tornillos}}</li>
+        <li><strong>Precio Total:</strong> BOB {{precio}}</li>
+      </ul>
+
+      <img class="preview" src="{{imagen3d}}" alt="Vista 3D" />
+
+      <footer class="footer">
+        <p>
+          La cotización es válida por 7 días. Cualquier modificación posterior
+          podría afectar el precio.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

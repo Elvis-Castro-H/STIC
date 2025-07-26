@@ -104,6 +104,7 @@ class ActionProcesarCotizacionSeparador(Action):
             considera que para brand, model y material usar el formato Abcd, la primera letra en mayúscula y el resto en minúscula.           
             para year usar el formato YYYY, para thickness usar el formato X.0 (donde X es un número entero) y debe ser en pulgadas, si recibes en otra unidad lo transformas y lo pasas en pulgadas con solo un decimal
             si solo proporciona el modelo y eres capaz de deducir la marca, dame también la marca.
+            por el momento los unicos materiales disponibles son Aluminio, Acero 1010, considera eso al enviarme como json y enviame con ese nombre
             """
 
             try:
@@ -150,7 +151,7 @@ class ActionProcesarCotizacionSeparador(Action):
 
             if missing_fields:
                 missing_fields_text = ", ".join(missing_fields)
-                request_prompt = f"El usuario ha proporcionado una información parcial para cotizar separadores de aro. Faltan los siguientes datos: {missing_fields_text}. Por favor, genera una pregunta para pedir esa información faltante de manera natural y fluida."                             
+                request_prompt = f"Dame una pregunta en formato JSON con la clave question, para este enunciado: El usuario ha proporcionado una información parcial para cotizar separadores de aro. Faltan los siguientes datos: {missing_fields_text}. Por favor, genera una pregunta para pedir esa información faltante de manera natural y fluida."                             
 
                 response = client.models.generate_content(
                     model="gemini-2.5-flash",
@@ -159,7 +160,11 @@ class ActionProcesarCotizacionSeparador(Action):
                 )
 
                 question_to_ask = response.text
-                dispatcher.utter_message(text=question_to_ask)
+                print(question_to_ask)
+                data_question = json.loads(question_to_ask)
+                print(data_question)
+                question = data_question.get("question") if data_question.get("question") else "no"
+                dispatcher.utter_message(text=question)
 
                 return [FollowupAction("action_listen"),             
                         SlotSet("marca", brand),

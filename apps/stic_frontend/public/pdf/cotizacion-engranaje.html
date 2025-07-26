@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cotización de Engranaje</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      margin: 40px;
+      color: #000;
+    }
+
+    .cotizacion-container {
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .logo {
+      width: 120px;
+      display: block;
+      margin: 0 auto 20px auto;
+    }
+
+    .titulo {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .detalles {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    .detalles li {
+      margin-bottom: 5px;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 10px;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="cotizacion-container">
+    <img class="logo" src="/LOGO.jpg" alt="Logo de STIC" />
+
+    <h1 class="titulo">Cotización de Engranaje</h1>
+
+    <p><strong>ID Cotización:</strong> COT-{{timestamp}}</p>
+    <p><strong>Fecha:</strong> {{fecha}}</p>
+
+    <ul class="detalles">
+      <li><strong>Diámetro exterior:</strong> {{diametroExterior}} mm</li>
+      <li><strong>Diámetro hueco (pitch):</strong> {{diametroHueco}} mm</li>
+      <li><strong>Altura del diente:</strong> {{alturaDiente}} mm</li>
+      <li><strong>Espesor:</strong> {{espesor}} mm</li>
+      <li><strong>Número de dientes:</strong> {{numDientes}}</li>
+      <li><strong>Tipo de engranaje:</strong> {{tipoEngranaje}}</li>
+      <li><strong>Material:</strong> {{material}}</li>
+      <li><strong>Precio Total:</strong> BOB {{precio}}</li>
+    </ul>
+
+    <footer class="footer">
+      <p>La cotización es válida por 7 días. Cualquier modificación posterior podría afectar el precio.</p>
+    </footer>
+  </div>
+</body>
+</html>

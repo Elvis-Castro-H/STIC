@@ -235,3 +235,192 @@ body {
   cursor: pointer;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
+
+/* Añade estos estilos a tu CSS */
+.auth-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 16px;
+  background-color: white;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.error-text {
+  color: #e50914;
+  font-size: 0.875rem;
+  display: block;
+  margin-top: -0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.error-message {
+  background-color: rgba(229, 9, 20, 0.1);
+  border: 1px solid #e50914;
+  color: #e50914;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.checkbox input {
+  margin-right: 10px;
+}
+
+.auth-checkbox {
+  width: 18px;
+  height: 18px;
+}
+
+/* Estilos para la interfaz de usuario en el header */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  color: #333;
+}
+
+.user-name {
+  font-weight: 500;
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-panel-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background-color: #333;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.admin-panel-link:hover {
+  background-color: #555;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background-color: transparent;
+  color: #e50914;
+  border: 1px solid #e50914;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #e50914;
+  color: white;
+}
+
+/* Estilos para elementos de formulario */
+.auth-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 16px;
+  background-color: white;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.error-text {
+  color: #e50914;
+  font-size: 0.875rem;
+  display: block;
+  margin-top: -0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.error-message {
+  background-color: rgba(229, 9, 20, 0.1);
+  border: 1px solid #e50914;
+  color: #e50914;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.checkbox input {
+  margin-right: 10px;
+}
+
+.auth-checkbox {
+  width: 18px;
+  height: 18px;
+}
+
+/* Para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .user-info {
+    gap: 0.5rem;
+  }
+  
+  .admin-panel-link span,
+  .logout-btn span {
+    display: none;
+  }
+  
+  .admin-panel-link,
+  .logout-btn {
+    padding: 6px;
+  }
+}

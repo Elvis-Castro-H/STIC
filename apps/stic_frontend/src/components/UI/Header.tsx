@@ -1,21 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { FaUser } from "react-icons/fa";
 import "../../styles/globals.css";
 import Image from "next/image";
 import logo from "@/assets/image/logo.jpg";
-
-interface User {
-  name: string;
-}
+import { useFirebaseUser } from "@/hooks/useFirebaseUser";
+import { FiUser, FiLogOut, FiSettings } from "react-icons/fi"; // Importar iconos
 
 export default function Header() {
-  const [user, setUser] = useState<User | null>(null);
-
-  const handleLogout = () => {
-    setUser(null);
-  };
+  const { user, isAdmin, logout } = useFirebaseUser();
 
   return (
     <header className="header-container">
@@ -54,9 +48,22 @@ export default function Header() {
           </>
         ) : (
           <div className="user-info">
-            <span className="user-name">👤 {user.name}</span>
-            <button onClick={handleLogout} className="logout-btn">
-              Logout
+            
+              <FaUser size={18} />
+        
+            <span className="user-name">{user.displayName || user.email}</span>
+            
+            {/* Enlace al Panel Admin - solo visible para administradores */}
+            {isAdmin() && (
+              <Link href="/adminpanel" className="admin-panel-link">
+                <FiSettings size={18} />
+                <span>Admin</span>
+              </Link>
+            )}
+            
+            <button onClick={logout} className="logout-btn">
+              <FiLogOut size={18} />
+              <span>Salir</span>
             </button>
           </div>
         )}

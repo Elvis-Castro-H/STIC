@@ -48,6 +48,53 @@ export default function PoleasPage() {
     setIsCalculating(false);
   };
 
+  const generarPDFPolea = async () => {
+  if (!cotizacion) return;
+
+  const html2pdf = (await import("html2pdf.js")).default;
+
+  const htmlResp = await fetch("/pdf/cotizacion-polea.html");
+  const htmlTemplate = await htmlResp.text();
+
+  const htmlWithData = htmlTemplate
+    .replace("{{fecha}}", new Date().toLocaleDateString())
+    .replace("{{diametroExterior}}", diametroExterior)
+    .replace("{{diametroHueco}}", diametroHueco)
+    .replace("{{numCanales}}", numCanales)
+    .replace("{{tipoCanal}}", tipoCanal)
+    .replace("{{material}}", material)
+    .replace("{{precio}}", cotizacion.price.toFixed(2))
+    .replace("{{timestamp}}", Date.now().toString());
+
+  const iframe = document.createElement("iframe");
+  iframe.style.display = "none";
+  document.body.appendChild(iframe);
+
+  const doc = iframe.contentDocument || iframe.contentWindow?.document;
+  if (!doc) return;
+
+  doc.open();
+  doc.write(htmlWithData);
+  doc.close();
+
+  iframe.onload = () => {
+    const content = iframe.contentDocument?.body;
+    if (!content) return;
+
+    html2pdf().set({
+      margin: 0,
+      filename: `POLEA_${tipoCanal}_${Date.now()}.pdf`,
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    }).from(content).save();
+
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+    }, 1000);
+  };
+};
+
+
   return (
     <div className="contenedor-principal">
       <h1 className="titulo">Poleas</h1>
@@ -164,6 +211,12 @@ export default function PoleasPage() {
         <button className="btn-rojo" disabled={isCalculating} onClick={handleCalculate}>
           {isCalculating ? "Calculando..." : "Diseño completado"}
         </button>
+        {cotizacion && (
+          <button className="btn-outline" onClick={generarPDFPolea}>
+            Descargar PDF
+          </button>
+        )}
+
       </div>
     </div>
   );

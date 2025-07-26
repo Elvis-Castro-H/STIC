@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import {
   WebGLRenderer,
   Scene,
@@ -21,8 +21,8 @@ import { FontLoader, Font } from "three/examples/jsm/loaders/FontLoader";
 // @ts-ignore
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 
-
 type SpacerProps = {
+  containerRef: React.RefObject<HTMLDivElement | null>;
   studCount?: number;
   hasCenterLip?: boolean;
   thickness?: number;
@@ -33,6 +33,7 @@ type SpacerProps = {
 };
 
 const SpacerScene = ({
+  containerRef,
   studCount = 6,
   hasCenterLip = true,
   thickness = 20,
@@ -41,8 +42,6 @@ const SpacerScene = ({
   lipHeight = 10,
   lipDiameter = 60,
 }: SpacerProps) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -74,7 +73,6 @@ const SpacerScene = ({
     const spacerMat = new MeshPhongMaterial({ color: new Color(0x111111), shininess: 30 });
     const boltMat = new MeshPhongMaterial({ color: new Color(0x888888) });
     const lipMat = new MeshPhongMaterial({ color: new Color(0x333333) });
-
     const holeMat = new MeshBasicMaterial({ color: 0x888888 }); 
 
     const outerRadius = (boltPattern + 50) / 2;
@@ -83,11 +81,6 @@ const SpacerScene = ({
     const boltLength = 30;
     const boltCircleRadius = boltPattern / 2;
     const lipRadius = lipDiameter / 2;
-
-    const topHoleRadius = 30 / 2;
-    const bottomHoleRadius = lipDiameter / 2;
-    const bottomHoleDepth = 8;
-    const topHoleDepth = thickness - bottomHoleDepth;
 
     const spacer = new Mesh(
       new CylinderGeometry(outerRadius, outerRadius, thickness, 64),
@@ -125,31 +118,28 @@ const SpacerScene = ({
         bolt.position.set(x, thickness / 2 + boltLength / 2, z);
         scene.add(bolt);
       } else {
+        const topHoleRadius = 30 / 2;
+        const bottomHoleRadius = 13.5 / 2;
+        const bottomHoleDepth = 8;
+        const topHoleDepth = thickness - bottomHoleDepth;
 
-const topHoleRadius = 30 / 2;
-const bottomHoleRadius = 13.5 / 2;
-const bottomHoleDepth = 8;
-const topHoleDepth = thickness - bottomHoleDepth;
+        const topHole = new Mesh(
+          new CylinderGeometry(topHoleRadius, topHoleRadius, topHoleDepth + 0.01, 32),
+          holeMat
+        );
+        topHole.position.y = (bottomHoleDepth / 2);
 
-const topHole = new Mesh(
-  new CylinderGeometry(topHoleRadius, topHoleRadius, topHoleDepth + 0.01, 32),
-  holeMat
-);
-topHole.position.y = (bottomHoleDepth / 2);
+        const bottomHole = new Mesh(
+          new CylinderGeometry(bottomHoleRadius, bottomHoleRadius, bottomHoleDepth + 0.01, 32),
+          holeMat
+        );
+        bottomHole.position.y = -(topHoleDepth / 2); 
 
-const bottomHole = new Mesh(
-  new CylinderGeometry(bottomHoleRadius, bottomHoleRadius, bottomHoleDepth + 0.01, 32),
-  holeMat
-);
-bottomHole.position.y = -(topHoleDepth / 2); 
-
-const steppedHoleGroup = new Group();
-steppedHoleGroup.add(topHole);
-steppedHoleGroup.add(bottomHole);
-steppedHoleGroup.position.set(x, 0, z);
-scene.add(steppedHoleGroup);
-
-
+        const steppedHoleGroup = new Group();
+        steppedHoleGroup.add(topHole);
+        steppedHoleGroup.add(bottomHole);
+        steppedHoleGroup.position.set(x, 0, z);
+        scene.add(steppedHoleGroup);
       }
     }
 
@@ -191,17 +181,9 @@ scene.add(steppedHoleGroup);
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };
-  }, [
-    studCount,
-    hasCenterLip,
-    thickness,
-    boltPattern,
-    boltDiameter,
-    lipHeight,
-    lipDiameter,
-  ]);
+  }, [containerRef, studCount, hasCenterLip, thickness, boltPattern, boltDiameter, lipHeight, lipDiameter]);
 
-  return <div ref={containerRef} style={{ width: "100%", height: "100vh" }} />;
+  return null;
 };
 
 export default SpacerScene;
