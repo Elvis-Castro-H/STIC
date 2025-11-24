@@ -113,86 +113,92 @@ export default function SeparadoresPage() {
 
 
 
-const generarPDF = async () => {
-  if (!cotizacion || !threeContainerRef.current) return;
+  const generarPDF = async () => {
+    if (!cotizacion || !threeContainerRef.current) return;
 
-  const html2pdf = (await import("html2pdf.js")).default;
+    const html2pdf = (await import("html2pdf.js")).default;
 
-  // Captura de imagen 3D
-  const canvas = await html2canvas(threeContainerRef.current);
-  const captura3D = canvas.toDataURL("image/png");
+    // Captura de imagen 3D
+    const canvas = await html2canvas(threeContainerRef.current);
+    const captura3D = canvas.toDataURL("image/png");
 
-  // Carga HTML embebido con estilos inline
-  const htmlResp = await fetch("/pdf/cotizacion-separadores-template.html");
-  let htmlTemplate = await htmlResp.text();
+    // Carga HTML embebido con estilos inline
+    const htmlResp = await fetch("/pdf/cotizacion-separadores-template.html");
+    let htmlTemplate = await htmlResp.text();
 
-  // Reemplaza los placeholders
-  const htmlWithData = htmlTemplate
-  .replace("{{logo}}", "/LOGO.jpg")
-  .replace("{{fecha}}", new Date().toLocaleDateString())
-  .replace("{{marca}}", marca)
-  .replace("{{modelo}}", modelo)
-  .replace("{{anio}}", anio)
-  .replace("{{espesor}}", espesor)
-  .replace("{{material}}", materialSeleccionado)
-  .replace("{{patron}}", cotizacion.boltPattern.toString())
-  .replace("{{centro}}", cotizacion.centerBore.toString())
-  .replace("{{tornillos}}", cotizacion.boltCount.toString())
-  .replace("{{precio}}", cotizacion.price.toFixed(2))
-  .replace("{{imagen3d}}", captura3D)
-  .replace("{{timestamp}}", Date.now().toString());
+    // Reemplaza los placeholders
+    const htmlWithData = htmlTemplate
+      .replace("{{logo}}", "/LOGO.jpg")
+      .replace("{{fecha}}", new Date().toLocaleDateString())
+      .replace("{{marca}}", marca)
+      .replace("{{modelo}}", modelo)
+      .replace("{{anio}}", anio)
+      .replace("{{espesor}}", espesor)
+      .replace("{{material}}", materialSeleccionado)
+      .replace("{{patron}}", cotizacion.boltPattern.toString())
+      .replace("{{centro}}", cotizacion.centerBore.toString())
+      .replace("{{tornillos}}", cotizacion.boltCount.toString())
+      .replace("{{precio}}", cotizacion.price.toFixed(2))
+      .replace("{{imagen3d}}", captura3D)
+      .replace("{{timestamp}}", Date.now().toString());
 
-  // Usa el iframe oculto ya existente
-  const iframe = document.getElementById("mi-iframe") as HTMLIFrameElement | null;
-  if (!iframe) {
-    alert("No se encontró el iframe 'mi-iframe'");
-    return;
-  }
-
-  const doc = iframe.contentDocument || iframe.contentWindow?.document;
-  if (!doc) {
-    alert("No se pudo acceder al documento del iframe");
-    return;
-  }
-
-  // Escribe el contenido generado en el iframe
-  doc.open();
-  doc.write(htmlWithData);
-  doc.close();
-
-  // Espera a que las imágenes y el DOM se carguen completamente
-  iframe.onload = () => {
-    const images = iframe.contentDocument?.images || [];
-    const allImagesLoaded = Array.from(images).every(img => img.complete);
-
-    if (allImagesLoaded) {
-      generarPDFDesdeIframe(iframe, html2pdf);
-    } else {
-      // Esperar hasta que TODAS las imágenes se hayan cargado
-      let loadedCount = 0;
-      Array.from(images).forEach(img => {
-        img.onload = () => {
-          loadedCount++;
-          if (loadedCount === images.length) {
-            generarPDFDesdeIframe(iframe, html2pdf);
-          }
-        };
-      });
+    // Usa el iframe oculto ya existente
+    const iframe = document.getElementById("mi-iframe") as HTMLIFrameElement | null;
+    if (!iframe) {
+      alert("No se encontró el iframe 'mi-iframe'");
+      return;
     }
+
+    const doc = iframe.contentDocument || iframe.contentWindow?.document;
+    if (!doc) {
+      alert("No se pudo acceder al documento del iframe");
+      return;
+    }
+
+    // Escribe el contenido generado en el iframe
+    doc.open();
+    doc.write(htmlWithData);
+    doc.close();
+
+    // Espera a que las imágenes y el DOM se carguen completamente
+    iframe.onload = () => {
+      const images = iframe.contentDocument?.images || [];
+      const allImagesLoaded = Array.from(images).every(img => img.complete);
+
+      if (allImagesLoaded) {
+        generarPDFDesdeIframe(iframe, html2pdf);
+      } else {
+        // Esperar hasta que TODAS las imágenes se hayan cargado
+        let loadedCount = 0;
+        Array.from(images).forEach(img => {
+          img.onload = () => {
+            loadedCount++;
+            if (loadedCount === images.length) {
+              generarPDFDesdeIframe(iframe, html2pdf);
+            }
+          };
+        });
+      }
+    };
   };
-};
 
-const generarPDFDesdeIframe = (iframe: HTMLIFrameElement, html2pdf: any) => {
-  const content = iframe.contentDocument?.body;
-  if (!content) return;
+  const generarPDFDesdeIframe = (iframe: HTMLIFrameElement, html2pdf: any) => {
+    const content = iframe.contentDocument?.body;
+    if (!content) return;
 
-  html2pdf().set({
-    margin: 0,
-    filename: `SEP-${Date.now()}.pdf`,
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-  }).from(content).save();
-};
+    html2pdf().set({
+      margin: 10,
+      filename: `SEP-${Date.now()}.pdf`,
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    }).from(content).save();
+  };
 
   return (
     <div className="contenedor-principal">
@@ -294,12 +300,14 @@ const generarPDFDesdeIframe = (iframe: HTMLIFrameElement, html2pdf: any) => {
             </select>
           </div>
 
-          {cotizacion && (
-            <div className="precio-cotizado" style={{ marginTop: "1.5rem", fontSize: "1.1rem", textAlign: "center", color: "#333", fontWeight: "bold" }}>
-              Precio estimado: BOB {cotizacion.price.toFixed(2)}
-            </div>
-          )}
-        </div>
+          {
+            cotizacion && (
+              <div className="precio-cotizado" style={{ marginTop: "1.5rem", fontSize: "1.1rem", textAlign: "center", color: "#333", fontWeight: "bold" }}>
+                Precio estimado: BOB {cotizacion.price.toFixed(2)}
+              </div>
+            )
+          }
+        </div >
 
         <div className="contenedor-visualizacion">
           <p className="subtitulo" style={{ color: "#f00" }}>Visualización 3D</p>
@@ -326,7 +334,7 @@ const generarPDFDesdeIframe = (iframe: HTMLIFrameElement, html2pdf: any) => {
             )}
           </div>
         </div>
-      </div>
+      </div >
 
       <div className="botones">
         <button className="btn-outline">Cancelar</button>
@@ -340,11 +348,11 @@ const generarPDFDesdeIframe = (iframe: HTMLIFrameElement, html2pdf: any) => {
 
         {cotizacion && (
           <button className="btn-outline" onClick={generarPDF}>
-  Descargar PDF
-</button>
+            Descargar PDF
+          </button>
         )}
       </div>
       <iframe id="mi-iframe" style={{ display: "none" }}></iframe>
-    </div>
+    </div >
   );
 }

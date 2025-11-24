@@ -1,87 +1,170 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Cotización</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        font-size: 12px;
-        margin: 40px;
-        color: #000;
-      }
 
-      .cotizacion-container {
-        max-width: 700px;
-        margin: auto;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Cotización de Separador - STIC</title>
+</head>
 
-      .logo {
-        width: 120px;
-        display: block;
-        margin: 0 auto 20px auto;
-      }
+<body style="font-family: Arial, sans-serif; font-size: 11px; color: #2c3e50; margin: 0; padding: 20px;">
 
-      .titulo {
-        text-align: center;
-        font-size: 20px;
-        margin-bottom: 10px;
-      }
+  <!-- Header -->
+  <table
+    style="width: 100%; margin-bottom: 20px; border-bottom: 3px solid #e74c3c; padding-bottom: 10px; border-collapse: collapse;">
+    <tr>
+      <td style="width: 60%; vertical-align: top;">
+        <img src="{{logo}}" alt="STIC Logo" style="width: 80px; height: auto;" />
+        <div style="font-size: 22px; font-weight: bold; color: #e74c3c; margin: 5px 0;">STIC</div>
+        <div style="font-size: 9px; color: #7f8c8d; line-height: 1.5;">
+          Fabricación de Componentes Mecánicos Industriales<br>
+          Tel: +591 XXX XXXXX | Email: info@stic.com<br>
+          La Paz, Bolivia
+        </div>
+      </td>
+      <td style="width: 40%; vertical-align: top;">
+        <div style="background: #ecf0f1; padding: 10px; text-align: right;">
+          <div style="font-size: 16px; font-weight: bold; color: #2c3e50; margin-bottom: 5px;">COTIZACIÓN</div>
+          <div style="font-size: 9px; color: #34495e; line-height: 1.6;">
+            <strong>N°:</strong> COT-{{timestamp}}<br>
+            <strong>Fecha:</strong> {{fecha}}<br>
+            <strong>Válida hasta:</strong> 7 días
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
 
-      .detalles {
-        list-style: none;
-        padding: 0;
-        margin-bottom: 20px;
-      }
+  <!-- Vehicle Information -->
+  <div
+    style="font-size: 13px; font-weight: bold; color: #2c3e50; margin: 15px 0 8px 0; padding-bottom: 3px; border-bottom: 2px solid #ecf0f1;">
+    SEPARADORES DE ARO - Información del Vehículo
+  </div>
 
-      .detalles li {
-        margin-bottom: 5px;
-      }
+  <table cellspacing="5" style="width: 100%; margin-bottom: 15px; border-collapse: separate;">
+    <tr>
+      <td style="width: 50%; padding: 8px; background: #f8f9fa; border-left: 3px solid #e74c3c; vertical-align: top;">
+        <span
+          style="font-size: 8px; color: #7f8c8d; text-transform: uppercase; display: block; margin-bottom: 3px;">Marca</span>
+        <span style="font-size: 11px; color: #2c3e50; font-weight: bold;">{{marca}}</span>
+      </td>
+      <td style="width: 50%; padding: 8px; background: #f8f9fa; border-left: 3px solid #e74c3c; vertical-align: top;">
+        <span
+          style="font-size: 8px; color: #7f8c8d; text-transform: uppercase; display: block; margin-bottom: 3px;">Modelo</span>
+        <span style="font-size: 11px; color: #2c3e50; font-weight: bold;">{{modelo}}</span>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 50%; padding: 8px; background: #f8f9fa; border-left: 3px solid #e74c3c; vertical-align: top;">
+        <span
+          style="font-size: 8px; color: #7f8c8d; text-transform: uppercase; display: block; margin-bottom: 3px;">Año</span>
+        <span style="font-size: 11px; color: #2c3e50; font-weight: bold;">{{anio}}</span>
+      </td>
+      <td style="width: 50%; padding: 8px; background: #f8f9fa; border-left: 3px solid #e74c3c; vertical-align: top;">
+        <span
+          style="font-size: 8px; color: #7f8c8d; text-transform: uppercase; display: block; margin-bottom: 3px;">Material</span>
+        <span style="font-size: 11px; color: #2c3e50; font-weight: bold;">{{material}}</span>
+      </td>
+    </tr>
+  </table>
 
-      .preview {
-        width: 100%;
-        max-height: 300px;
-        object-fit: contain;
-        margin-top: 10px;
-        border: 1px solid #ccc;
-      }
+  <!-- Technical Specifications -->
+  <div
+    style="font-size: 13px; font-weight: bold; color: #2c3e50; margin: 15px 0 8px 0; padding-bottom: 3px; border-bottom: 2px solid #ecf0f1;">
+    Especificaciones Técnicas
+  </div>
 
-      .footer {
-        margin-top: 30px;
-        font-size: 10px;
-        color: #555;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="cotizacion-container">
-      <img class="logo" src="{{logo}}" alt="Logo de STIC" />
-      <h1 class="titulo">Cotización de Separador</h1>
+  <table style="width: 100%; margin-bottom: 15px; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th
+          style="background: #34495e; color: white; padding: 8px; text-align: left; font-size: 9px; text-transform: uppercase; font-weight: 600;">
+          Especificación</th>
+        <th
+          style="background: #34495e; color: white; padding: 8px; text-align: left; font-size: 9px; text-transform: uppercase; font-weight: 600;">
+          Valor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          style="padding: 7px 8px; border-bottom: 1px solid #ecf0f1; font-size: 10px; font-weight: 600; color: #34495e;">
+          Espesor del Separador</td>
+        <td style="padding: 7px 8px; border-bottom: 1px solid #ecf0f1; font-size: 10px;">{{espesor}} pulgadas</td>
+      </tr>
+      <tr>
+        <td
+          style="padding: 7px 8px; border-bottom: 1px solid #ecf0f1; font-size: 10px; font-weight: 600; color: #34495e;">
+          Patrón de Pernos (PCD)</td>
+        <td style="padding: 7px 8px; border-bottom: 1px solid #ecf0f1; font-size: 10px;">{{patron}} mm</td>
+      </tr>
+      <tr>
+        <td
+          style="padding: 7px 8px; border-bottom: 1px solid #ecf0f1; font-size: 10px; font-weight: 600; color: #34495e;">
+          Diámetro Centro</td>
+        <td style="padding: 7px 8px; border-bottom: 1px solid #ecf0f1; font-size: 10px;">{{centro}} mm</td>
+      </tr>
+      <tr>
+        <td
+          style="padding: 7px 8px; border-bottom: 1px solid #ecf0f1; font-size: 10px; font-weight: 600; color: #34495e;">
+          Cantidad de Tornillos</td>
+        <td style="padding: 7px 8px; border-bottom: 1px solid #ecf0f1; font-size: 10px;">{{tornillos}} unidades</td>
+      </tr>
+    </tbody>
+  </table>
 
-      <p><strong>ID Cotización:</strong> COT-{{timestamp}}</p>
-      <p><strong>Fecha:</strong> {{fecha}}</p>
+  <!-- 3D Preview -->
+  <div style="text-align: center; background: #f8f9fa; padding: 12px; margin: 15px 0;">
+    <div style="font-size: 10px; color: #7f8c8d; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">Vista
+      Previa 3D del Producto</div>
+    <img src="{{imagen3d}}" alt="Visualización 3D"
+      style="max-width: 350px; width: 100%; height: auto; border: 2px solid #e74c3c;" />
+  </div>
 
-      <ul class="detalles">
-        <li><strong>Marca:</strong> {{marca}}</li>
-        <li><strong>Modelo:</strong> {{modelo}}</li>
-        <li><strong>Año:</strong> {{anio}}</li>
-        <li><strong>Espesor:</strong> {{espesor}}"</li>
-        <li><strong>Material:</strong> {{material}}</li>
-        <li><strong>Patrón de pernos:</strong> {{patron}}</li>
-        <li><strong>Centro:</strong> {{centro}} mm</li>
-        <li><strong>Tornillos:</strong> {{tornillos}}</li>
-        <li><strong>Precio Total:</strong> BOB {{precio}}</li>
-      </ul>
+  <!-- Pricing -->
+  <div style="width: 100%; margin-top: 20px;">
+    <table style="width: 280px; float: right; border-collapse: collapse;">
+      <tr>
+        <td
+          style="padding: 6px 10px; font-size: 10px; border-bottom: 1px solid #ecf0f1; font-weight: 600; color: #34495e;">
+          Subtotal (Juego de 4)</td>
+        <td
+          style="padding: 6px 10px; font-size: 10px; border-bottom: 1px solid #ecf0f1; text-align: right; color: #2c3e50;">
+          BOB {{precio}}</td>
+      </tr>
+      <tr>
+        <td
+          style="padding: 6px 10px; font-size: 10px; border-bottom: 1px solid #ecf0f1; font-weight: 600; color: #34495e;">
+          IVA (0%)</td>
+        <td
+          style="padding: 6px 10px; font-size: 10px; border-bottom: 1px solid #ecf0f1; text-align: right; color: #2c3e50;">
+          BOB 0.00</td>
+      </tr>
+      <tr>
+        <td style="background: #e74c3c; color: white; font-size: 13px; font-weight: bold; padding: 10px; border: none;">
+          TOTAL</td>
+        <td
+          style="background: #e74c3c; color: white; font-size: 13px; font-weight: bold; padding: 10px; border: none; text-align: right;">
+          BOB {{precio}}</td>
+      </tr>
+    </table>
+  </div>
 
-      <img class="preview" src="{{imagen3d}}" alt="Vista 3D" />
-
-      <footer class="footer">
-        <p>
-          La cotización es válida por 7 días. Cualquier modificación posterior
-          podría afectar el precio.
-        </p>
-      </footer>
+  <!-- Footer -->
+  <div style="clear: both; margin-top: 30px; padding-top: 12px; border-top: 2px solid #ecf0f1;">
+    <div
+      style="background: #fff9e6; border-left: 4px solid #f39c12; padding: 10px; margin-bottom: 12px; font-size: 9px; line-height: 1.5; color: #7f8c8d;">
+      <strong style="color: #f39c12;">⚠ Condiciones:</strong><br>
+      • Esta cotización es válida por 7 días calendario a partir de la fecha de emisión.<br>
+      • Los precios están expresados en Bolivianos (BOB) e incluyen un juego de 4 separadores.<br>
+      • Cualquier modificación en las especificaciones puede afectar el precio final.<br>
+      • Tiempo de fabricación: 5-7 días hábiles (sujeto a confirmación).<br>
+      • Incluye tornillos de montaje de alta resistencia.
     </div>
-  </body>
+    <div style="text-align: center; font-size: 8px; color: #95a5a6; line-height: 1.5;">
+      Gracias por su preferencia | STIC - Componentes Mecánicos de Precisión<br>
+      www.stic.com | Av. Principal #123, La Paz, Bolivia
+    </div>
+  </div>
+</body>
+
 </html>
