@@ -5,7 +5,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from rasa_sdk.events import SlotSet, FollowupAction, UserUtteranceReverted
-from google import genai
+
 import json
 
 load_dotenv()
@@ -89,7 +89,11 @@ class ActionProcesarCotizacionSeparador(Action):
         material = tracker.get_slot("material")
         
         api_key = os.getenv("GEMINI_API_KEY")
-        client = genai.Client(api_key=api_key)
+        gemini_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+        headers = {
+            "x-goog-api-key": api_key,
+            "Content-Type": "application/json"
+        }
 
         itr = 0
 
@@ -105,23 +109,33 @@ class ActionProcesarCotizacionSeparador(Action):
             para year usar el formato YYYY, para thickness usar el formato X.0 (donde X es un número entero) y debe ser en pulgadas, si recibes en otra unidad lo transformas y lo pasas en pulgadas con solo un decimal
             si solo proporciona el modelo y eres capaz de deducir la marca, dame también la marca.
             por el momento los unicos materiales disponibles son Aluminio, Acero 1010, considera eso al enviarme como json y enviame con ese nombre
+            si el usuario no pone algun dato, entonces esos campos quedaran como nulos
             """
 
             try:
-                response = client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=prompt,
-                    config={"response_mime_type": "application/json"}
-                )
+                payload = {
+                    "contents": [{
+                        "parts": [{"text": prompt}]
+                    }],
+                    "generationConfig": {
+                        "responseMimeType": "application/json"
+                    }
+                }
+                
+                response = requests.post(gemini_url, headers=headers, json=payload)
+                response.raise_for_status()
 
-                gemini_response = response.text
+                response_data = response.json()
+                gemini_response = response_data["candidates"][0]["content"]["parts"][0]["text"]
                 data = json.loads(gemini_response)
 
-                prev_brand = data.get("brand") if data.get("brand") else prev_brand
-                prev_model = data.get("model") if data.get("model") else prev_model
-                prev_year = data.get("year") if data.get("year") else prev_year
-                prev_thickness = data.get("thickness") if data.get("thickness") else prev_thickness
-                prev_material = data.get("material") if data.get("material") else prev_material
+                print(data)
+
+                prev_brand = data[0].get("brand") if data[0].get("brand") else prev_brand
+                prev_model = data[0].get("model") if data[0].get("model") else prev_model
+                prev_year = data[0].get("year") if data[0].get("year") else prev_year
+                prev_thickness = data[0].get("thickness") if data[0].get("thickness") else prev_thickness
+                prev_material = data[0].get("material") if data[0].get("material") else prev_material
 
             except Exception as e:
                 gemini_response = "Hubo un error procesando tu información. Intenta de nuevo."
@@ -153,13 +167,19 @@ class ActionProcesarCotizacionSeparador(Action):
                 missing_fields_text = ", ".join(missing_fields)
                 request_prompt = f"Dame una pregunta en formato JSON con la clave question, para este enunciado: El usuario ha proporcionado una información parcial para cotizar separadores de aro. Faltan los siguientes datos: {missing_fields_text}. Por favor, genera una pregunta para pedir esa información faltante de manera natural y fluida."                             
 
-                response = client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=request_prompt,
-                    config={"response_mime_type": "application/json"}
-                )
-
-                question_to_ask = response.text
+                payload_question = {
+                    "contents": [{
+                        "parts": [{"text": request_prompt}]
+                    }],
+                    "generationConfig": {
+                        "responseMimeType": "application/json"
+                    }
+                }
+                
+                response = requests.post(gemini_url, headers=headers, json=payload_question)
+                response.raise_for_status()
+                response_data = response.json()
+                question_to_ask = response_data["candidates"][0]["content"]["parts"][0]["text"]
                 print(question_to_ask)
                 data_question = json.loads(question_to_ask)
                 print(data_question)
@@ -280,9 +300,12 @@ class ActionQueryGemini(Action):
 
         user_message = tracker.latest_message.get('text')
         api_key = os.getenv("GEMINI_API_KEY")
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
-        headers = {"Content-Type": "application/json"}
+        headers = {
+            "x-goog-api-key": api_key,
+            "Content-Type": "application/json"
+        }
         payload = {
             "contents": [{
                 "parts": [{
