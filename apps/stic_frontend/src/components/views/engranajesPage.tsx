@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/separadores.css";
 import GearScene from "../UI/3d-views/Gear";
+import FieldTooltip from "../UI/FieldTooltip";
 
 import { calculateGearQuotation } from "@/app/services/GearQuotationService";
 import { fetchMaterials } from "@/app/services/MaterialService";
@@ -28,6 +29,13 @@ export default function EngranajesPage() {
     };
     loadMaterials();
   }, []);
+
+  //Limpiar cotización cuando se edita cualquier campo
+  const clearQuotationOnEdit = () => {
+    if (cotizacion) {
+      setCotizacion(null);
+    }
+  };
 
   const handleCalculate = async () => {
     if (!diametroExterior || !diametroHueco || !alturaDiente || !espesor || !numDientes || !material) {
@@ -117,52 +125,82 @@ export default function EngranajesPage() {
           <p className="subtitulo">Detalles del producto</p>
 
           <div style={{ marginBottom: "1.5rem" }}>
-            <label className="label">Diámetro exterior (mm)</label>
+            <label className="label">
+              Diámetro exterior (mm)
+              <FieldTooltip
+                imagePath="/images/gear-help/diametro-exterior.png"
+                altText="Diámetro exterior del engranaje"
+              />
+            </label>
             <input
               type="number"
               className="select"
               value={diametroExterior}
-              onChange={(e) => setDiametroExterior(e.target.value)}
+              onChange={(e) => { setDiametroExterior(e.target.value); clearQuotationOnEdit(); }}
             />
           </div>
 
           <div style={{ marginBottom: "1.5rem" }}>
-            <label className="label">Diámetro del hueco interior (mm)</label>
+            <label className="label">
+              Diámetro del hueco interior (mm)
+              <FieldTooltip
+                imagePath="/images/gear-help/diametro-hueco.png"
+                altText="Diámetro del hueco interior (eje)"
+              />
+            </label>
             <input
               type="number"
               className="select"
               value={diametroHueco}
-              onChange={(e) => setDiametroHueco(e.target.value)}
+              onChange={(e) => { setDiametroHueco(e.target.value); clearQuotationOnEdit(); }}
             />
           </div>
 
           <div style={{ marginBottom: "1.5rem" }}>
-            <label className="label">Altura del diente (mm)</label>
+            <label className="label">
+              Altura del diente (mm)
+              <FieldTooltip
+                imagePath="/images/gear-help/altura-diente.png"
+                altText="Altura del diente del engranaje"
+              />
+            </label>
             <input
               type="number"
               className="select"
               value={alturaDiente}
-              onChange={(e) => setAlturaDiente(e.target.value)}
+              onChange={(e) => { setAlturaDiente(e.target.value); clearQuotationOnEdit(); }}
             />
           </div>
 
           <div style={{ marginBottom: "1.5rem" }}>
-            <label className="label">Espesor del engranaje (mm)</label>
+            <label className="label">
+              Espesor del engranaje (mm)
+              <FieldTooltip
+                imagePath="/images/gear-help/espesor-engranaje.png"
+                altText="Espesor o ancho del engranaje"
+              />
+            </label>
             <input
               type="number"
               className="select"
               value={espesor}
-              onChange={(e) => setEspesor(e.target.value)}
+              onChange={(e) => { setEspesor(e.target.value); clearQuotationOnEdit(); }}
             />
           </div>
 
           <div style={{ marginBottom: "1.5rem" }}>
-            <label className="label">Número de dientes</label>
+            <label className="label">
+              Número de dientes
+              <FieldTooltip
+                imagePath="/images/gear-help/numero-dientes.png"
+                altText="Cantidad total de dientes del engranaje"
+              />
+            </label>
             <input
               type="number"
               className="select"
               value={numDientes}
-              onChange={(e) => setNumDientes(e.target.value)}
+              onChange={(e) => { setNumDientes(e.target.value); clearQuotationOnEdit(); }}
             />
           </div>
 
@@ -171,7 +209,7 @@ export default function EngranajesPage() {
             <select
               className="select"
               value={material}
-              onChange={(e) => setMaterial(e.target.value)}
+              onChange={(e) => { setMaterial(e.target.value); clearQuotationOnEdit(); }}
             >
               <option value="">Selecciona un material</option>
               {materiales.map((m) => (
@@ -200,11 +238,8 @@ export default function EngranajesPage() {
 
         <div className="contenedor-visualizacion">
           <p className="subtitulo">Visualización 3D</p>
-          <div
-            className="contenedor-visualizacion-gear"
-            style={{ margin: 0, padding: 0, height: "50vh" }}
-          >
-            {true ? (
+          <div className="contenedor-visualizacion-gear">
+            {cotizacion ? (
               <GearScene
                 numTeeth={numDientes ? parseInt(numDientes) : 0}
                 outerDiameter={diametroExterior ? parseFloat(diametroExterior) : 0}

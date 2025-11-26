@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../styles/separadores.css";
 import SpacerScene from "../UI/3d-views/Spacer";
+import FieldTooltip from "../UI/FieldTooltip";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -90,6 +91,13 @@ export default function SeparadoresPage() {
     };
     loadMaterials();
   }, []);
+
+  // Limpiar cotización cuando se edita cualquier campo
+  const clearQuotationOnEdit = () => {
+    if (cotizacion) {
+      setCotizacion(null);
+    }
+  };
 
   const handleCalculateDesign = async () => {
     if (!marca || !modelo || !anio || !espesor || !materialSeleccionado) {
@@ -281,7 +289,7 @@ export default function SeparadoresPage() {
               {["1", "1.5", "2"].map((val) => (
                 <button
                   key={val}
-                  onClick={() => setEspesor(val)}
+                  onClick={() => { setEspesor(val); clearQuotationOnEdit(); }}
                   className={`espesor-btn ${espesor === val ? "activo" : ""}`}
                 >
                   {val}"
@@ -295,7 +303,7 @@ export default function SeparadoresPage() {
             <select
               className="select"
               value={materialSeleccionado}
-              onChange={(e) => setMaterialSeleccionado(e.target.value)}
+              onChange={(e) => { setMaterialSeleccionado(e.target.value); clearQuotationOnEdit(); }}
               disabled={isLoadingMaterials}
             >
               <option value="">
