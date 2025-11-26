@@ -36,84 +36,84 @@ export default function AdminForm() {
 
   const router = useRouter();
 
-const admin = isAdmin();
+  const admin = isAdmin();
 
-useEffect(() => {
-  if (user && !admin) {
-     //router.push("/");
-    return;
-  }
-
-  const loadData = async () => {
-    setLoading(true);
-    try {
-      const productsData = await fetchProducts();
-      const materialsData = await fetchMaterials();
-      setProducts(productsData);
-      setMaterials(materialsData);
-    } catch (error) {
-      console.error("Error al cargar datos:", error);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (user && !admin) {
+      //router.push("/");
+      return;
     }
-  };
 
-  loadData();
-}, [user, admin]);
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        const productsData = await fetchProducts();
+        const materialsData = await fetchMaterials();
+        setProducts(productsData);
+        setMaterials(materialsData);
+      } catch (error) {
+        console.error("Error al cargar datos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [user, admin]);
   const saveProductToAPI = async (product: Partial<Product>) => {
-  const endpoint = product.id
-    ? `/api/Product/${product.id}`
-    : "/api/Product";
-  const method = product.id ? "PUT" : "POST";
+    const endpoint = product.id
+      ? `/api/Product/${product.id}`
+      : "/api/Product";
+    const method = product.id ? "PUT" : "POST";
 
-  const response = await fetch(endpoint, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      userId: user?.uid ?? "", // si tu backend requiere esto
-    },
-    body: JSON.stringify(product),
-  });
+    const response = await fetch(endpoint, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        userId: user?.uid ?? "", // si tu backend requiere esto
+      },
+      body: JSON.stringify(product),
+    });
 
-  if (!response.ok) {
-    throw new Error("Error en la solicitud al guardar producto");
-  }
+    if (!response.ok) {
+      throw new Error("Error en la solicitud al guardar producto");
+    }
 
-  return await response.json();
-};
-
-const saveMaterialToAPI = async (material: Partial<Material>) => {
-  console.log('ID que estás enviando al backend:', material.id);
-  const endpoint = material.id
-    ? `http://localhost:5267/api/Material/${material.id}`
-    : "http://localhost:5267/api/Material";
-  const method = material.id ? "PUT" : "POST";  
-
-  const bodyToSend = {
-    
-    pricePerKg: material.pricePerKg ?? 0,
-    name: material.name ?? "",
-    density: material.density ?? 0,
-    pricePerHourMachine: material.pricePerHourMachine ?? 0,
-    pricePerHourOperator: material.pricePerHourOperator ?? 0,
+    return await response.json();
   };
 
-  console.log("Saving material:", bodyToSend);
+  const saveMaterialToAPI = async (material: Partial<Material>) => {
+    console.log('ID que estás enviando al backend:', material.id);
+    const endpoint = material.id
+      ? `http://localhost:5267/api/Material/${material.id}`
+      : "http://localhost:5267/api/Material";
+    const method = material.id ? "PUT" : "POST";
 
-  const response = await fetch(endpoint, {
-    method,
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(bodyToSend),
-  });
+    const bodyToSend = {
 
-  if (!response.ok) {
-    throw new Error("Error en la solicitud al guardar material");
-  }
+      pricePerKg: material.pricePerKg ?? 0,
+      name: material.name ?? "",
+      density: material.density ?? 0,
+      pricePerHourMachine: material.pricePerHourMachine ?? 0,
+      pricePerHourOperator: material.pricePerHourOperator ?? 0,
+    };
 
-  return await response.json();
-};
+    console.log("Saving material:", bodyToSend);
+
+    const response = await fetch(endpoint, {
+      method,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bodyToSend),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error en la solicitud al guardar material");
+    }
+
+    return await response.json();
+  };
 
 
 
@@ -145,43 +145,43 @@ const saveMaterialToAPI = async (material: Partial<Material>) => {
     }
   };
 
-const handleSaveProduct = async (product: Partial<Product>) => {
-  try {
-    const saved = await saveProductToAPI(product);
+  const handleSaveProduct = async (product: Partial<Product>) => {
+    try {
+      const saved = await saveProductToAPI(product);
 
-    if (product.id) {
-      setProducts(products.map((p) => (p.id === product.id ? saved : p)));
-      setEditingProduct(null);
-    } else {
-      setProducts([...products, saved]);
-      setNewProduct({});
+      if (product.id) {
+        setProducts(products.map((p) => (p.id === product.id ? saved : p)));
+        setEditingProduct(null);
+      } else {
+        setProducts([...products, saved]);
+        setNewProduct({});
+      }
+
+      alert("Producto guardado con éxito");
+    } catch (error) {
+      console.error("Error al guardar producto:", error);
+      alert("Error al guardar el producto");
     }
+  };
 
-    alert("Producto guardado con éxito");
-  } catch (error) {
-    console.error("Error al guardar producto:", error);
-    alert("Error al guardar el producto");
-  }
-};
+  const handleSaveMaterial = async (material: Partial<Material>) => {
+    try {
+      const saved = await saveMaterialToAPI(material);
 
-const handleSaveMaterial = async (material: Partial<Material>) => {
-  try {
-    const saved = await saveMaterialToAPI(material);
+      if (material.id) {
+        setMaterials(materials.map((m) => (m.id === material.id ? saved : m)));
+        setEditingMaterial(null);
+      } else {
+        setMaterials([...materials, saved]);
+        setNewMaterial({});
+      }
 
-    if (material.id) {
-      setMaterials(materials.map((m) => (m.id === material.id ? saved : m)));
-      setEditingMaterial(null);
-    } else {
-      setMaterials([...materials, saved]);
-      setNewMaterial({});
+      alert("Material guardado con éxito");
+    } catch (error) {
+      console.error("Error al guardar material:", error);
+      alert("Error al guardar el material");
     }
-
-    alert("Material guardado con éxito");
-  } catch (error) {
-    console.error("Error al guardar material:", error);
-    alert("Error al guardar el material");
-  }
-};
+  };
 
   // Si no hay usuario o está cargando, mostrar indicador
   if (!user || loading) {
@@ -204,40 +204,30 @@ const handleSaveMaterial = async (material: Partial<Material>) => {
 
         <nav className="admin-nav">
           <button
-            className={`admin-nav-item ${
-              activeTab === "dashboard" ? "active" : ""
-            }`}
+            className={`admin-nav-item ${activeTab === "dashboard" ? "active" : ""
+              }`}
             onClick={() => setActiveTab("dashboard")}
           >
             <FaTachometerAlt /> Dashboard
           </button>
 
           <button
-            className={`admin-nav-item ${
-              activeTab === "productos" ? "active" : ""
-            }`}
+            className={`admin-nav-item ${activeTab === "productos" ? "active" : ""
+              }`}
             onClick={() => setActiveTab("productos")}
           >
             <FaBoxes /> Productos
           </button>
 
           <button
-            className={`admin-nav-item ${
-              activeTab === "materiales" ? "active" : ""
-            }`}
+            className={`admin-nav-item ${activeTab === "materiales" ? "active" : ""
+              }`}
             onClick={() => setActiveTab("materiales")}
           >
             <FaCogs /> Materiales
           </button>
 
-          <button
-            className={`admin-nav-item ${
-              activeTab === "cotizaciones" ? "active" : ""
-            }`}
-            onClick={() => setActiveTab("cotizaciones")}
-          >
-            <FaFileInvoiceDollar /> Cotizaciones
-          </button>
+
         </nav>
 
         <div className="admin-sidebar-footer">
@@ -265,10 +255,7 @@ const handleSaveMaterial = async (material: Partial<Material>) => {
                 <p className="stat-number">{materials.length}</p>
               </div>
 
-              <div className="admin-stat-card">
-                <h3>Cotizaciones</h3>
-                <p className="stat-number">{cotizaciones.length}</p>
-              </div>
+
             </div>
 
             <h2>Actividad Reciente</h2>

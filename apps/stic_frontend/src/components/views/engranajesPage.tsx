@@ -87,7 +87,8 @@ export default function EngranajesPage() {
       .replace(/\{\{subtotal\}\}/g, subtotal.toFixed(2))
       .replace(/\{\{iva\}\}/g, iva.toFixed(2))
       .replace(/\{\{total\}\}/g, total.toFixed(2))
-      .replace("{{timestamp}}", Date.now().toString());
+      .replace("{{quotationId}}", cotizacion.id.toString());
+
 
     // Accede al iframe
     const iframe = document.getElementById("iframe-engranaje") as HTMLIFrameElement;

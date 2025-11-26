@@ -157,7 +157,7 @@ export default function SeparadoresPage() {
       .replace(/\{\{iva\}\}/g, iva.toFixed(2))
       .replace(/\{\{total\}\}/g, total.toFixed(2))
       .replace("{{imagen3d}}", captura3D)
-      .replace("{{timestamp}}", Date.now().toString());
+      .replace("{{quotationId}}", cotizacion.id.toString());
 
     // Usa el iframe oculto ya existente
     const iframe = document.getElementById("mi-iframe") as HTMLIFrameElement | null;

@@ -83,7 +83,7 @@ export default function PoleasPage() {
       .replace(/\{\{subtotal\}\}/g, subtotal.toFixed(2))
       .replace(/\{\{iva\}\}/g, iva.toFixed(2))
       .replace(/\{\{total\}\}/g, total.toFixed(2))
-      .replace("{{timestamp}}", Date.now().toString());
+      .replace("{{quotationId}}", cotizacion.id.toString());
 
     const iframe = document.createElement("iframe");
     iframe.style.display = "none";

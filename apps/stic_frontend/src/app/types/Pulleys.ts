@@ -8,6 +8,8 @@ export type PulleyQuotationRequest = {
 };
 
 export type PulleyQuotationResponse = {
+  id: number;
+  createdAt: string;
   price: number;
   outerDiameter: number;
   innerBoreDiameter: number;
