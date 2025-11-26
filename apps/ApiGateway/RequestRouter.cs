@@ -1,19 +1,15 @@
-﻿using System.Net;
-
-namespace ApiGateway;
+﻿namespace ApiGateway;
 
 public class RequestRouter(CustomServiceDiscovery serviceDiscovery, IHttpClientFactory httpClientFactory)
 {
-    private readonly HttpClient _httpClient = httpClientFactory.CreateClient("router");
+    private readonly HttpClient _httpClient = httpClientFactory.CreateClient();
 
     public async Task<HttpResponseMessage> RedirectRequestAsync(string serviceName, string downstreamPath, HttpRequestMessage request, string queryString)
     {
         var serviceUri = await GetServiceUriAsync(serviceName);
         var downstreamUrl = BuildDownstreamUrl(serviceUri, downstreamPath, queryString);
-
-        Console.WriteLine($"Forwarding request to: {downstreamUrl}");
-
         var downstreamRequest = CreateDownstreamRequest(request, downstreamUrl);
+
         return await SendDownstreamRequestAsync(downstreamRequest);
     }
 
@@ -22,20 +18,15 @@ public class RequestRouter(CustomServiceDiscovery serviceDiscovery, IHttpClientF
         var serviceUri = await serviceDiscovery.GetServiceUriAsync(serviceName);
         if (serviceUri == null)
         {
-            throw new Exception($"Service '{serviceName}' not found in the service registry.");
+            throw new Exception($"Service {serviceName} not found in the service registry.");
         }
-        return serviceUri.TrimEnd('/');
+        return serviceUri;
     }
 
     private string BuildDownstreamUrl(string serviceUri, string downstreamPath, string queryString)
     {
-        downstreamPath = downstreamPath.TrimStart('/');
-        
-        serviceUri = serviceUri.Replace(":80", "").TrimEnd('/');
-
         return $"{serviceUri}/{downstreamPath}{queryString}";
     }
-
 
     private HttpRequestMessage CreateDownstreamRequest(HttpRequestMessage originalRequest, string downstreamUrl)
     {

@@ -23,7 +23,7 @@ public class WheelDetailsController : ControllerBase
         _httpClient = new HttpClient();
         //_eventBusPublishUrl = Environment.GetEnvironmentVariable("EVENT_BUS_PUBLISH_URL")
         //                    ?? throw new InvalidOperationException("EVENT_BUS_PUBLISH_URL no está definido.");
-        _eventBusPublishUrl = "http://localhost:5233/api/events/publish";
+        _eventBusPublishUrl = "http://eventbus:5233/api/events/publish";
     }
 
     [HttpGet]

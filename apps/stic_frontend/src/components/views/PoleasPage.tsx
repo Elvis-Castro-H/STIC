@@ -56,14 +56,25 @@ export default function PoleasPage() {
     const htmlResp = await fetch("/pdf/cotizacion-polea.html");
     const htmlTemplate = await htmlResp.text();
 
+    // Calcula IVA y total
+    const subtotal = cotizacion.price;
+    const iva = subtotal * 0.13;
+    const total = subtotal + iva;
+
+    // Lógica para singular/plural de canales
+    const canalesText = parseInt(numCanales) === 1 ? "canal" : "canales";
+
     const htmlWithData = htmlTemplate
       .replace("{{fecha}}", new Date().toLocaleDateString())
       .replace("{{diametroExterior}}", diametroExterior)
       .replace("{{diametroHueco}}", diametroHueco)
       .replace("{{numCanales}}", numCanales)
+      .replace("{{canalesText}}", canalesText)
       .replace("{{tipoCanal}}", tipoCanal)
       .replace("{{material}}", material)
-      .replace("{{precio}}", cotizacion.price.toFixed(2))
+      .replace(/\{\{subtotal\}\}/g, subtotal.toFixed(2))
+      .replace(/\{\{iva\}\}/g, iva.toFixed(2))
+      .replace(/\{\{total\}\}/g, total.toFixed(2))
       .replace("{{timestamp}}", Date.now().toString());
 
     const iframe = document.createElement("iframe");

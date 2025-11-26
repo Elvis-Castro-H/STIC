@@ -126,6 +126,14 @@ export default function SeparadoresPage() {
     const htmlResp = await fetch("/pdf/cotizacion-separadores-template.html");
     let htmlTemplate = await htmlResp.text();
 
+    // Calcula IVA y total
+    const subtotal = cotizacion.price;
+    const iva = subtotal * 0.13;
+    const total = subtotal + iva;
+
+    // Formato combinado para patrón de pernos: tornillos x patrón
+    const patronCompleto = `${cotizacion.boltCount}x${cotizacion.boltPattern}`;
+
     // Reemplaza los placeholders
     const htmlWithData = htmlTemplate
       .replace("{{logo}}", "/LOGO.jpg")
@@ -135,10 +143,11 @@ export default function SeparadoresPage() {
       .replace("{{anio}}", anio)
       .replace("{{espesor}}", espesor)
       .replace("{{material}}", materialSeleccionado)
-      .replace("{{patron}}", cotizacion.boltPattern.toString())
+      .replace("{{patronCompleto}}", patronCompleto)
       .replace("{{centro}}", cotizacion.centerBore.toString())
-      .replace("{{tornillos}}", cotizacion.boltCount.toString())
-      .replace("{{precio}}", cotizacion.price.toFixed(2))
+      .replace(/\{\{subtotal\}\}/g, subtotal.toFixed(2))
+      .replace(/\{\{iva\}\}/g, iva.toFixed(2))
+      .replace(/\{\{total\}\}/g, total.toFixed(2))
       .replace("{{imagen3d}}", captura3D)
       .replace("{{timestamp}}", Date.now().toString());
 

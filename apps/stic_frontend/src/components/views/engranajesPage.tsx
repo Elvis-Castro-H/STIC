@@ -61,6 +61,11 @@ export default function EngranajesPage() {
     const htmlResp = await fetch("/pdf/cotizacion-engranaje.html");
     const htmlTemplate = await htmlResp.text();
 
+    // Calcula IVA y total
+    const subtotal = cotizacion.price;
+    const iva = subtotal * 0.13;
+    const total = subtotal + iva;
+
     // Reemplaza los placeholders
     const htmlWithData = htmlTemplate
       .replace("{{fecha}}", new Date().toLocaleDateString())
@@ -71,7 +76,9 @@ export default function EngranajesPage() {
       .replace("{{numDientes}}", numDientes)
       .replace("{{tipoEngranaje}}", tipoEngranaje)
       .replace("{{material}}", material)
-      .replace("{{precio}}", cotizacion.price.toFixed(2))
+      .replace(/\{\{subtotal\}\}/g, subtotal.toFixed(2))
+      .replace(/\{\{iva\}\}/g, iva.toFixed(2))
+      .replace(/\{\{total\}\}/g, total.toFixed(2))
       .replace("{{timestamp}}", Date.now().toString());
 
     // Accede al iframe

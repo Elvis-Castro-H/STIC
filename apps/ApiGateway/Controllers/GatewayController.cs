@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 [ApiController]
-[Route("proxy/{serviceName}/{*path}")]
+[Route("{serviceName}/{*path}")]
 public class GatewayController : ControllerBase
 {
     private readonly RequestRouter _requestRouter;
@@ -23,44 +23,43 @@ public class GatewayController : ControllerBase
     [HttpGet, HttpPost, HttpPut, HttpDelete, HttpPatch]
     public async Task<IActionResult> ProxyRequest(string serviceName, string path)
     {
-        var method = Request.Method;
-        var queryString = Request.QueryString.Value ?? string.Empty;
-    
-        _logger.LogInformation("METHOD: {Method}, PATH: {Path}, QUERY: {Query}", method, path, queryString);
-        _logger.LogInformation("ProxyRequest initiated for service: {ServiceName}", serviceName);
-    
-        var downstreamRequest = new HttpRequestMessage(new HttpMethod(method), string.Empty);
-    
+        _logger.LogInformation("ProxyRequest initiated for service: {ServiceName}, path: {Path}", serviceName, path);
+
+        var requestMessage = new HttpRequestMessage(new HttpMethod(Request.Method), Request.Path)
+        {
+            Content = new StreamContent(Request.Body)
+        };
+
         foreach (var header in Request.Headers)
         {
-            if (header.Key.Equals("Host", StringComparison.OrdinalIgnoreCase))
-                continue; 
-            downstreamRequest.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
+            requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
         }
-    
-        if (Request.ContentLength > 0 &&
-            (method == HttpMethod.Post.Method || method == HttpMethod.Put.Method || method == HttpMethod.Patch.Method))
+
+        if ((Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) ||
+             Request.Method.Equals("PUT", StringComparison.OrdinalIgnoreCase)) &&
+            !requestMessage.Content.Headers.Contains("Content-Type"))
         {
-            Request.EnableBuffering();
-            using var reader = new StreamReader(Request.Body, Encoding.UTF8, leaveOpen: true);
-            var body = await reader.ReadToEndAsync();
-            Request.Body.Position = 0;
-    
-            downstreamRequest.Content = new StringContent(body, Encoding.UTF8, "application/json");
+            requestMessage.Content.Headers.Add("Content-Type", "application/json");
         }
-    
-        _logger.LogInformation("Request headers: {Headers}", downstreamRequest.Headers);
-        if (downstreamRequest.Content != null)
-            _logger.LogInformation("Request content: {Content}", await downstreamRequest.Content.ReadAsStringAsync());
-    
-        var response = await _requestRouter.RedirectRequestAsync(serviceName, path, downstreamRequest, queryString);
-    
+
+        if ((Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) ||
+             Request.Method.Equals("PUT", StringComparison.OrdinalIgnoreCase)) &&
+            requestMessage.Content != null)
+        {
+            var content = await new StreamReader(Request.Body).ReadToEndAsync();
+            requestMessage.Content = new StringContent(content, Encoding.UTF8, "application/json");
+        }
+
+        _logger.LogInformation("Request headers: {Headers}", requestMessage.Headers);
+        _logger.LogInformation("Request content: {Content}", await requestMessage.Content.ReadAsStringAsync());
+
+        var queryString = Request.QueryString.Value;
+        var response = await _requestRouter.RedirectRequestAsync(serviceName, path, requestMessage, queryString);
+
         var responseContent = await response.Content.ReadAsStringAsync();
         _logger.LogInformation("Response status code: {StatusCode}", response.StatusCode);
         _logger.LogInformation("Response content: {ResponseContent}", responseContent);
-    
+
         return StatusCode((int)response.StatusCode, responseContent);
     }
-
-
 }
