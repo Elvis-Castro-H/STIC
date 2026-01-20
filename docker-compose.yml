@@ -126,38 +126,6 @@ services:
       - ASPNETCORE_URLS=http://+:5198
       - Consul__Address=http://consul-2:8500
 
-  # Rasa Actions Server
-  rasa-actions:
-    build:
-      context: ./apps/intelligent-assistant/actions
-      dockerfile: Dockerfile
-    container_name: rasa-actions
-    ports:
-      - "5055:5055"
-    environment:
-      - GEMINI_API_KEY=AIzaSyADDl3WEEs_tnpuj03Bmu-kA_n-g4C-lXE
-    volumes:
-      - ./apps/intelligent-assistant/actions:/app
-    restart: always
-
-  # Rasa Server
-  rasa:
-    build:
-      context: ./apps/intelligent-assistant
-      dockerfile: Dockerfile
-    container_name: rasa
-    ports:
-      - "5005:5005"
-    depends_on:
-      - rasa-actions
-    environment:
-      - RASA_ACTIONS_ENDPOINT=http://rasa-actions:5055/webhook
-    volumes:
-      - ./apps/intelligent-assistant:/app
-      - ./apps/intelligent-assistant/models:/app/models
-    restart: always
-    command: ["rasa", "run", "--enable-api", "--cors", "*", "--interface", "0.0.0.0", "--endpoints", "endpoints.yml", "--port", "5005"]
-
 volumes:
   postgres_data:
   mongo_data:

@@ -40,7 +40,7 @@ public class PulleyService : BaseService<Pulley, int>, IPulleyService
                 GrooveType = grooveType,
                 Material = materialToUse,
                 MaterialId = materialToUse.Id,
-                Price = materialPrice + totalJobPrice
+                Price = (materialPrice + totalJobPrice) * grooveCount
             };
             
             return await _repository.CreateAsync(pulley);

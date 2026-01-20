@@ -23,7 +23,9 @@ export default function PoleasPage() {
   useEffect(() => {
     const loadMaterials = async () => {
       const data = await fetchMaterials();
-      setMateriales(data);
+      // Filtrar duplicados por nombre
+      const uniqueMaterials = Array.from(new Map(data.map(item => [item.name, item])).values());
+      setMateriales(uniqueMaterials);
     };
     loadMaterials();
   }, []);
@@ -72,6 +74,9 @@ export default function PoleasPage() {
     // Lógica para singular/plural de canales
     const canalesText = parseInt(numCanales) === 1 ? "canal" : "canales";
 
+    // Genera un ID de cotización usando el id del backend o un timestamp como fallback
+    const quotationId = cotizacion.id?.toString() || `POL-${Date.now()}`;
+
     const htmlWithData = htmlTemplate
       .replace("{{fecha}}", new Date().toLocaleDateString())
       .replace("{{diametroExterior}}", diametroExterior)
@@ -83,7 +88,7 @@ export default function PoleasPage() {
       .replace(/\{\{subtotal\}\}/g, subtotal.toFixed(2))
       .replace(/\{\{iva\}\}/g, iva.toFixed(2))
       .replace(/\{\{total\}\}/g, total.toFixed(2))
-      .replace("{{quotationId}}", cotizacion.id.toString());
+      .replace("{{quotationId}}", quotationId);
 
     const iframe = document.createElement("iframe");
     iframe.style.display = "none";

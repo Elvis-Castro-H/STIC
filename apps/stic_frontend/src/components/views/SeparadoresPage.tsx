@@ -86,7 +86,9 @@ export default function SeparadoresPage() {
     const loadMaterials = async () => {
       setIsLoadingMaterials(true);
       const data = await fetchMaterials();
-      setMateriales(data);
+      // Filtrar duplicados por nombre
+      const uniqueMaterials = Array.from(new Map(data.map(item => [item.name, item])).values());
+      setMateriales(uniqueMaterials);
       setIsLoadingMaterials(false);
     };
     loadMaterials();
